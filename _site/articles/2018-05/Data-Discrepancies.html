@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Even after cleaning the data there were a lot of discrepancies that were to be delt with">
+  <meta name="keywords" content="blog and jekyll">
+  <meta name="author" content="Data Discrepancies | Jay Vala">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Data Discrepancies | Jay Vala">
+  <meta name="twitter:description" content="Even after cleaning the data there were a lot of discrepancies that were to be delt with">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2018-05/Data-Discrepancies">
+  <meta property="og:title" content="Data Discrepancies | Jay Vala">
+  <meta property="og:description" content="Even after cleaning the data there were a lot of discrepancies that were to be delt with">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Data Discrepancies | Jay Vala</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2018-05/Data-Discrepancies">
+  <link rel="alternate" type="application/rss+xml" title="Jay Vala" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/">
+    <img src="http://localhost:4000/img/me.png" alt="" class="avatar">
+  </a>
+  
+  <a href="http://localhost:4000/" class="author_name">Jay Vala</a>
+  <span class="author_job">Junior Data Scientist @scoutbee</span>
+  <span class="author_bio mbm">Getting the basics right</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Data Discrepancies">Data Discrepancies</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        16 MAY 2018
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    6 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="analysizing-discrepancies-in-dataset">Analysizing Discrepancies in Dataset</h1>
+
+<p>a lot of discrepancies in the dataset created previously, I can to realize that when I was building the model. I always analyze the dataset before building the model because 90% of the time people don’t realize that their model is performing bad because their data was bad. I am not gonna let that happen.</p>
+
+<p>So what all discrepancies I found?</p>
+<ul>
+  <li>The largest sequence was of 242 words. This is really bad becasue then we have to pad each sequence to that lenght and that would be really bad when training as it will require more resource, which is scarce.</li>
+  <li>There are squences or sentences with just one word, well again this is not right because I will have to pad them with zeros. Hence, I need to remove them also.</li>
+</ul>
+
+<p>So what I am gonna do is I am gonna analyze the dataframe and come up with some strategy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">keras</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/home/jay/.local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using TensorFlow backend.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'/home/jay/Data_Set_Creation/Data_to_Use.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Sentence</th>
+      <th>Label</th>
+      <th>Numerical_Label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>summary the directive seek ensure eu country f...</td>
+      <td>transport</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>mlc set minimum global standard ensure right s...</td>
+      <td>transport</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>pron also seek limit social dump secure fair c...</td>
+      <td>transport</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>the main point new directive follow</td>
+      <td>transport</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>monitor compliance eu country introduce effect...</td>
+      <td>transport</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Sentence column to list
+</span><span class="n">sent</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">Sentence</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>We can not perform any numpy operation on string data, so our best bet is to convert strings to its encoded version</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Using Keras tokenizer
+</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">()</span>
+
+<span class="c1"># Tokenizing the sentences (This process may take some time depending on your corpus size)
+</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sent_encoded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now that all the sentences have been encoded, lets lets what I was telling in the starting. Check the maximum length of sentence in the sent_encoder</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">sent_encoded</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>242
+</code></pre></div></div>
+
+<p>As I said the longest string is of 242 words which is not convientent. Let’s check for all the squences that are one word, we will just sort the list</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sorted</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['nb',
+ 'pdf',
+ 'sbs',
+ 'act',
+ 'sum',
+ 'sum',
+ 'air',
+ 'van',
+ 'swd',
+ 'yes',
+ 'yes',
+ 'new',
+ 'iii',
+ 'mhz',
+ 'case',
+ 'next',
+ 'csdp',
+ 'coin',
+ 'coin',
+ 'loan',
+ 'summary',
+ 'summary',
+ 'summary',
+ 'summary',
+ 'summary',
+ 'erasmus',
+ 'summary',
+ 'summary',
+ 'summary',
+ 'summary',
+ 'context',
+ 'summary',
+ 'summary',
+ 'summary'
+ 'summary decision',
+ 'exception permit',
+ 'summary decision',
+ 'instrument adopt',
+ 'idea eur million',
+ 'permanent impact',
+ 'cyprus coal mine',
+ ...]
+</code></pre></div></div>
+
+<p>Now we will see the percentile of length of different sequences and analyse what can be done of this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">len_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">sent</span><span class="p">:</span>
+    <span class="n">len_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The length of longest sequence(in words)
+</span><span class="nb">max</span><span class="p">(</span><span class="n">len_list</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>242
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">len_list</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Percentile is a good way to see what percent of things fall at or below this number. In our case if we do percentile 99 of a list of lengths then it will show me the lenght(average) of 99 percent of the sequence in the list which is 66.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pre</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>66.0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">precentile</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">number</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">101</span><span class="p">):</span>
+    <span class="n">number</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">precentile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">percentile</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">precentile</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">percentile</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1,
+ 2,
+ 3,
+ 4,
+ 5,
+ 5,
+ 5,
+ 6,
+ 6,
+ 6,
+ 7,
+ 7,
+ 7,
+ 7,
+ 7,
+ 8,
+ 8,
+ 8,
+ 8,
+ 8,
+ 9,
+ 9,
+ 9,
+ 9,
+ 9,
+ 9,
+ 10,
+ 10,
+ 10,
+ 10,
+ 10,
+ 10,
+ 10,
+ 11,
+ 11,
+ 11,
+ 11,
+ 11,
+ 11,
+ 12,
+ 12,
+ 12,
+ 12,
+ 12,
+ 12,
+ 13,
+ 13,
+ 13,
+ 13,
+ 13,
+ 13,
+ 14,
+ 14,
+ 14,
+ 14,
+ 14,
+ 14,
+ 15,
+ 15,
+ 15,
+ 15,
+ 15,
+ 16,
+ 16,
+ 16,
+ 16,
+ 16,
+ 17,
+ 17,
+ 17,
+ 17,
+ 18,
+ 18,
+ 18,
+ 19,
+ 19,
+ 19,
+ 20,
+ 20,
+ 20,
+ 21,
+ 21,
+ 21,es)
+ 22,
+ 22,
+ 23,
+ 24,
+ 24,
+ 25,
+ 26,
+ 27,
+ 28,
+ 30,
+ 31,
+ 33,
+ 36,
+ 40,
+ 45,
+ 52,
+ 66,
+ 242]
+</code></pre></div></div>
+
+<p>Lets plot the distribution using matplot lib</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">percentile</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Length Distribution"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"No words in a line"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Frequency"</span><span class="p">)</span>
+<span class="c1">#for i, v in enumerate(precentile):
+</span>    <span class="c1">#plt.text(i, v + 1, str(v), color='blue', fontweight='bold')
+</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/output_23_0.png" /></p>
+
+<p>This is not good, We have to have a stretegy to counter this. Before I end this post. I want to see a few things that would help me get more insight of the data. 
+Firstly I want to see what is the ratio of each class</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># List of Numerical_Labels
+</span><span class="n">labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">Numerical_Label</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+    <span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({0: 7513,
+         1: 1313,
+         2: 4596,
+         3: 11685,
+         4: 13170,
+         5: 4512,
+         6: 5447,
+         7: 1372,
+         8: 3207,
+         9: 2453,
+         10: 3148,
+         11: 3329,
+         12: 1931,
+         13: 808,
+         14: 2378,
+         15: 8426,
+         16: 3765,
+         17: 1478,
+         18: 1193,
+         19: 2469,
+         20: 3273,
+         21: 3942,
+         22: 1176,
+         23: 963,
+         24: 9876,
+         25: 3776,
+         26: 4142,
+         27: 1873,
+         28: 2058,
+         29: 922,
+         30: 1710,
+         31: 3632})
+</code></pre></div></div>
+
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2018-05/Data-Discrepancies" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2018-05/Data-Discrepancies" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2018-05/Data-Discrepancies" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2018-05/Data-Discrepancies" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2018-05/Data-Discrepancies" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2019 Jay Vala. Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://github.com/renyuanz/leonids/">leonids theme</a> made with <i class="fa fa-heart heart-icon"></i>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

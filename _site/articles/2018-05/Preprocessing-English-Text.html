@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Steps involved in the processing and cleaning the English corpus of EU summaries">
+  <meta name="keywords" content="blog and jekyll">
+  <meta name="author" content="English Corpus Preprocessing | Jay Vala">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="English Corpus Preprocessing | Jay Vala">
+  <meta name="twitter:description" content="Steps involved in the processing and cleaning the English corpus of EU summaries">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2018-05/Preprocessing-English-Text">
+  <meta property="og:title" content="English Corpus Preprocessing | Jay Vala">
+  <meta property="og:description" content="Steps involved in the processing and cleaning the English corpus of EU summaries">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>English Corpus Preprocessing | Jay Vala</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2018-05/Preprocessing-English-Text">
+  <link rel="alternate" type="application/rss+xml" title="Jay Vala" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/">
+    <img src="http://localhost:4000/img/me.png" alt="" class="avatar">
+  </a>
+  
+  <a href="http://localhost:4000/" class="author_name">Jay Vala</a>
+  <span class="author_job">Junior Data Scientist @scoutbee</span>
+  <span class="author_bio mbm">Getting the basics right</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="English Corpus Preprocessing">English Corpus Preprocessing</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        4 MAY 2018
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    15 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="steps-in-preprocessing-english-text">Steps in preprocessing English text</h1>
+
+<p>Before feeding text to any deep learning model it is advisable to preprocess the text to make it more suitable for the model. Preprocessing in general means cleaning the data to make it more convenient for any or all deep learning models to learn properly and efficiently.</p>
+
+<p>Preprocessing is subjective, that means it depends on the purpose of preprocessing, depends on data, depends on language and also depends on the type of technique one would be adapting, but there are a lot of steps in preprocessing that does not depend on any of the above mentioned things, but its more of something that has to be done no matter what.</p>
+
+<p>In my thesis I will be using set of preprocessing rules that I think will make learning more effective for my model that I am planning on using.</p>
+
+<h3 id="rules">Rules:</h3>
+
+<ul>
+  <li>All characters to lower case or upper case.</li>
+  <li>Sentence tokenize the text.</li>
+  <li>Remove numbers.</li>
+  <li>Remove currency symbols.</li>
+  <li>Remove all the punctuation.</li>
+  <li>Remove English stop words.</li>
+  <li>Remove other unicode characters(if any).</li>
+  <li>Perform Lemmatization or Stemming.</li>
+</ul>
+
+<p>Let’s go ahead and see how to do these things in python.</p>
+
+<p><strong>NOTE: I am using anaconda as my virtual environment, I will soon add how to setup anaconda and virtual environment in any linux system(Debain based).</strong></p>
+
+<p>First step is to import necessary modules to perform the operations, I have used <a href="https://docs.python.org/3/library/re.html">Regular expressions</a>, <a href="https://docs.python.org/3/library/string.html">String</a> Class of Python, <a href="https://www.nltk.org/">NLTK Library</a>, and <a href="https://spacy.io/usage/">Spacy library</a>.</p>
+
+<p>So, the first step is to sentence tokenize the text we receive, for that I am using sentence tokenizer from NLTK library.</p>
+
+<p>Let’s take an example text file for the corpus.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUMMARY
+During the period 2004-06, the Commission is implementing a Community programme covering plant, microbial and animal genetic resources <span class="k">*</span> which are or could be of use <span class="k">in </span>agriculture. The amount allocated to the programme is 10 million.
+
+The Commission selects the actions to be part-financed under the programme on the basis of calls <span class="k">for </span>proposals and following evaluation by independent experts. Proposals may be submitted by a public sector body or any natural or legal person <span class="nb">who </span>is a national of a Member State and established <span class="k">in </span>the Community, <span class="k">in </span>an EFTA/EEA country, or <span class="k">in </span>an associated country <span class="k">in </span>accordance with the conditions stipulated <span class="k">in </span>a bilateral agreement.
+
+The actions, which may last <span class="k">for </span>a maximum of four years, may be of three types:
+targeted actions, part-financed up to a maximum of 50% of their total cost and including:- transnational actions promoting the ex situ and <span class="k">in </span>situ conservation <span class="k">*</span>, characterisation, collection and utilisation of genetic resources <span class="k">in </span>agriculture<span class="p">;</span>- the establishment of a European decentralised, permanent and widely accessible web-based inventory of genetic resources currently conserved <span class="k">in </span>situ including <span class="k">in </span>situ/on-farm genetic resources conservation activities<span class="p">;</span>- the establishment of a European decentralised, permanent and widely accessible web-based inventory of the ex situ collections <span class="o">(</span>gene banks<span class="o">)</span> and <span class="k">in </span>situ resources<span class="p">;</span>- the promotion of regular exchanges of technical and scientific information among competent organisations <span class="k">in </span>the Member States<span class="p">;</span>
+concerted actions, part-financed up to a maximum of 80% of their total cost, transnational <span class="k">in </span>character and promoting the exchange of information on thematic issues <span class="k">for </span>the purpose of improving the coordination of actions and programmes <span class="k">in </span>the sphere concerned<span class="p">;</span>
+
+accompanying actions, part-financed up to a maximum of 80% of their total cost and comprising information, dissemination and advisory actions, training courses and the preparation of technical reports.
+
+Once an action has been approved, the Commission will conclude a grant agreement with the participants setting out detailed criteria <span class="k">for </span>the reporting, dissemination, protection and exploitation of the results of the action.
+
+The Commission is assisted by a Committee on the conservation, characterisation, collection and utilisation of genetic resources <span class="k">in </span>agriculture. The Commission may also call on the assistance of scientific and technical experts <span class="k">for </span>the implementation of the programme.
+
+At the end of the programme, the Commission will appoint a group of independent experts to report on the implementation of the Regulation, to assess the results and to make appropriate recommendations. The group<span class="s1">'s report will be submitted to the European Parliament, the Council and the European Economic and Social Committee.
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># Let's read the file 
+</span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Conservation, characterisation, collection and utilisation of genetic resources in agriculture.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+<span class="c1">#NOTE: The function readlines() return a list of lines in the same format as the file is.
+</span>
+
+<span class="k">def</span> <span class="nf">sentences</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
+    <span class="s">"""Returns sentence tokenized text list"""</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
+
+    <span class="c1"># Sentence tokenize with help of sent_tokenize from nltk
+</span>    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sentence</span>
+</code></pre></div></div>
+
+<p>Now lets pass the <code class="highlighter-rouge">contents</code> to the function <code class="highlighter-rouge">sentences(list_)</code> and see what is the output</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">after_sent_token</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The output of the above code is</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="s1">'SUMMARY\nDuring the period 2004-06, the Commission is implementing a Community programme covering plant, microbial and animal genetic resources * which are or could be of use in agriculture.'</span>,
+ <span class="s1">'The amount allocated to the programme is 10\xa0million.'</span>,
+ <span class="s1">'The Commission selects the actions to be part-financed under the programme on the basis of calls for proposals and following evaluation by independent experts.'</span>,
+ <span class="s1">'Proposals may be submitted by a public sector body or any natural or legal person who is a national of a Member State and established in the Community, in an EFTA/EEA country, or in an associated country in accordance with the conditions stipulated in a bilateral agreement.'</span>,
+ <span class="s1">'The actions, which may last for a maximum of four years, may be of three types:\ntargeted actions, part-financed up to a maximum of 50% of their total cost and including:- transnational actions promoting the ex situ and in situ conservation *, characterisation, collection and utilisation of genetic resources in agriculture;- the establishment of a European decentralised, permanent and widely accessible web-based inventory of genetic resources currently conserved in situ including in situ/on-farm genetic resources conservation activities;- the establishment of a European decentralised, permanent and widely accessible web-based inventory of the ex situ collections (gene banks) and in situ resources;- the promotion of regular exchanges of technical and scientific information among competent organisations in the Member States;\nconcerted actions, part-financed up to a maximum of 80% of their total cost, transnational in character and promoting the exchange of information on thematic issues for the purpose of improving the coordination of actions and programmes in the sphere concerned;\naccompanying actions, part-financed up to a maximum of 80% of their total cost and comprising information, dissemination and advisory actions, training courses and the preparation of technical reports.'</span>,
+ <span class="s1">'Once an action has been approved, the Commission will conclude a grant agreement with the participants setting out detailed criteria for the reporting, dissemination, protection and exploitation of the results of the action.'</span>,
+ <span class="s1">'The Commission is assisted by a Committee on the conservation, characterisation, collection and utilisation of genetic resources in agriculture.'</span>,
+ <span class="s1">'The Commission may also call on the assistance of scientific and technical experts for the implementation of the programme.'</span>,
+ <span class="s1">'At the end of the programme, the Commission will appoint a group of independent experts to report on the implementation of the Regulation, to assess the results and to make appropriate recommendations.'</span>,
+ <span class="s2">"The group's report will be submitted to the European Parliament, the Council and the European Economic and Social Committee."</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Now, that we have sentence tokenize, we will make everything into a lower case.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># after_sent_token is a list.
+# Make a new list.
+</span>
+<span class="n">after_lower</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">after_sent_token</span><span class="p">:</span>
+    <span class="n">after_lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>When we print the <code class="highlighter-rouge">after_lower</code> list, we get the output to be</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="s1">'summary\nduring the period 2004-06, the commission is implementing a community programme covering plant, microbial and animal genetic resources * which are or could be of use in agriculture.'</span>,
+ <span class="s1">'the amount allocated to the programme is 10\xa0million.'</span>,
+ <span class="s1">'the commission selects the actions to be part-financed under the programme on the basis of calls for proposals and following evaluation by independent experts.'</span>,
+ <span class="s1">'proposals may be submitted by a public sector body or any natural or legal person who is a national of a member state and established in the community, in an efta/eea country, or in an associated country in accordance with the conditions stipulated in a bilateral agreement.'</span>,
+ <span class="s1">'the actions, which may last for a maximum of four years, may be of three types:\ntargeted actions, part-financed up to a maximum of 50% of their total cost and including:- transnational actions promoting the ex situ and in situ conservation *, characterisation, collection and utilisation of genetic resources in agriculture;- the establishment of a european decentralised, permanent and widely accessible web-based inventory of genetic resources currently conserved in situ including in situ/on-farm genetic resources conservation activities;- the establishment of a european decentralised, permanent and widely accessible web-based inventory of the ex situ collections (gene banks) and in situ resources;- the promotion of regular exchanges of technical and scientific information among competent organisations in the member states;\nconcerted actions, part-financed up to a maximum of 80% of their total cost, transnational in character and promoting the exchange of information on thematic issues for the purpose of improving the coordination of actions and programmes in the sphere concerned;\naccompanying actions, part-financed up to a maximum of 80% of their total cost and comprising information, dissemination and advisory actions, training courses and the preparation of technical reports.'</span>,
+ <span class="s1">'once an action has been approved, the commission will conclude a grant agreement with the participants setting out detailed criteria for the reporting, dissemination, protection and exploitation of the results of the action.'</span>,
+ <span class="s1">'the commission is assisted by a committee on the conservation, characterisation, collection and utilisation of genetic resources in agriculture.'</span>,
+ <span class="s1">'the commission may also call on the assistance of scientific and technical experts for the implementation of the programme.'</span>,
+ <span class="s1">'at the end of the programme, the commission will appoint a group of independent experts to report on the implementation of the regulation, to assess the results and to make appropriate recommendations.'</span>,
+ <span class="s2">"the group's report will be submitted to the european parliament, the council and the european economic and social committee."</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Similarly, we can do everything as we did above. The full code for english preprocessing is below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This preprocessing is intended for english
+# coding: utf-8
+</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
+
+
+<span class="k">def</span> <span class="nf">sentences</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
+    <span class="s">"""Returns sentence tokenized text list"""</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
+
+    <span class="c1"># Sentence tokenize with help of sent_tokenize from nltk  
+</span>    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sentence</span>
+
+
+<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="s">"""Returns text with all the filtering necessary"""</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"(\d+\.\d+)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1">#t = re.sub(r"(\d+th?|st?|nd?|rd?)","", t)
+</span>    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}.\d{2}.\d{4}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}\/\d{2}\/\d{4}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}(\/|\.)\d{2}(\/|\.)\d{2}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"($|€|¥|₹|£)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"(</span><span class="si">%</span><span class="s">)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d+"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\n"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\xa0"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="k">def</span> <span class="nf">pun</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="s">"""Return punctuations from text"""</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s">""</span><span class="p">,</span><span class="s">""</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span>
+
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">lemmatizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="s">"""Returns text after lemmatization"""</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="n">sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">extras</span><span class="p">(</span><span class="n">sentences</span><span class="p">):</span>
+    <span class="s">"""Returns text after removing some extra symbols"""</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\"|\—|\'|\’"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">sentences</span><span class="p">)</span>
+    <span class="n">word_list</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">word_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&lt;=</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">word_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="c1"># Stop word removal
+</span><span class="k">def</span> <span class="nf">stop_word</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+    <span class="n">list_</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
+    <span class="n">words_list</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
+
+
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="s">"""Main Function"""</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Conservation, characterisation, collection and utilisation of genetic resources in agriculture.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="c1"># Joining the lines to make text block 
+</span>    <span class="n">contents</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Starting to preprocess file"</span><span class="p">)</span>
+    <span class="c1"># Sentence tokenize the text
+</span>    <span class="n">sent_tokenized</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="c1"># Removing stop words
+</span>    <span class="n">t1</span> <span class="o">=</span> <span class="p">[</span><span class="n">lemmatizer</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">sent_tokenized</span><span class="p">]</span>
+    <span class="c1"># lemmatization 
+</span>    <span class="n">t2</span> <span class="o">=</span> <span class="p">[</span><span class="n">stop_word</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">t1</span><span class="p">]</span>
+    <span class="c1"># Removing all the unnecessary things from the text 
+</span>    <span class="n">t3</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t2</span><span class="p">]</span>
+    <span class="c1"># Removing punctuations
+</span>    <span class="n">t4</span> <span class="o">=</span><span class="p">[</span><span class="n">pun</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t3</span><span class="p">]</span>
+
+    <span class="n">t5</span> <span class="o">=</span> <span class="p">[</span><span class="n">extras</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">t4</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Preprocessing done for file)</span><span class="err">
+
+</span><span class="s">    print(t5)</span><span class="err">
+
+</span><span class="s">if __name__ == "</span><span class="n">__main__</span><span class="s">":</span><span class="err">
+</span><span class="s">    main()</span><span class="err">
+</span></code></pre></div></div>
+
+<p>The output of the file after preprocessing will be</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="s1">'summary period commission implement community programme covering plant microbial animal genetic resource could use agriculture'</span>, <span class="s1">'amount allocate programme million'</span>, <span class="s1">'commission select action part finance programme basis call proposal follow evaluation independent expert'</span>, <span class="s1">'proposal may submit public sector body natural legal person national member state establish community efta eea country associated country accordance condition stipulate bilateral agreement'</span>, <span class="s1">'action may last maximum four year may three type target action part finance maximum pron total cost including transnational action promote ex situ situ conservation characterisation collection utilisation genetic resource agriculture establishment european decentralise permanent widely accessible web base inventory genetic resource currently conserve situ include situ farm genetic resource conservation activities establishment european decentralise permanent widely accessible web base inventory ex situ collection gene bank situ resources promotion regular exchange technical scientific information among competent organisation member states concerted action part finance maximum pron total cost transnational character promote exchange information thematic issue purpose improve coordination action programme sphere concern accompanying action part finance maximum pron total cost comprise information dissemination advisory action train course preparation technical report'</span>, <span class="s1">'action approve commission conclude grant agreement participant set detailed criterion reporting dissemination protection exploitation result action'</span>, <span class="s1">'commission assist committee conservation characterisation collection utilisation genetic resource agriculture'</span>, <span class="s1">'commission may also call assistance scientific technical expert implementation programme'</span>, <span class="s1">'end programme commission appoint group independent expert report implementation regulation assess result make appropriate recommendation'</span>, <span class="s1">'group report submit european parliament council european economic social committee'</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>This is probably all the preprocessing necessary for creating word vectors, that is what my next task is.</p>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2018-05/Preprocessing-English-Text" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2018-05/Preprocessing-English-Text" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2018-05/Preprocessing-English-Text" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2018-05/Preprocessing-English-Text" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2018-05/Preprocessing-English-Text" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2019 Jay Vala. Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://github.com/renyuanz/leonids/">leonids theme</a> made with <i class="fa fa-heart heart-icon"></i>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

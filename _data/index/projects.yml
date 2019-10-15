@@ -1,0 +1,5 @@
+- name: Master Thesis
+  descr: "Classification of multilingual legal text using deep learning: Evaluation of general purpose re-sources for legal domain specific task"
+  github: https://github.com/jdvala/Thesis
+
+# TODO: Add other projects, 12 cp and 6 cp

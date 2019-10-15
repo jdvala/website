@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Handy dandy notes part 2">
+  <meta name="keywords" content="blog and jekyll">
+  <meta name="author" content="Notes 2 | Jay Vala">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Notes 2 | Jay Vala">
+  <meta name="twitter:description" content="Handy dandy notes part 2">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2018-11/Basic-Notes-2">
+  <meta property="og:title" content="Notes 2 | Jay Vala">
+  <meta property="og:description" content="Handy dandy notes part 2">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Notes 2 | Jay Vala</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2018-11/Basic-Notes-2">
+  <link rel="alternate" type="application/rss+xml" title="Jay Vala" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/">
+    <img src="http://localhost:4000/img/me.png" alt="" class="avatar">
+  </a>
+  
+  <a href="http://localhost:4000/" class="author_name">Jay Vala</a>
+  <span class="author_job">Junior Data Scientist @scoutbee</span>
+  <span class="author_bio mbm">Getting the basics right</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Notes 2">Notes 2</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        5 NOV 2018
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    2 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h2 id="bayes-theorem">Bayes Theorem</h2>
+
+<p>In conditional probability we have a order of probabilities. That is</p>
+
+<script type="math/tex; mode=display">P(A|B) =\frac{P(A\cap B)}{P(B)}</script>
+
+<p>But it may not happen that we have the probability in this order or may happen that we may not have the probability of $P(B)$, thats when Bayes Theorm comes into play.</p>
+
+<p>Bayes Theorem lets you swap the order of dependence between events. So we can calculate $P(A|B)$ in terms of $P(B|A)$. This is useful as mentioned above when it is difficult to calculate any one of the term in conditinal probability.</p>
+
+<p>So,</p>
+
+<script type="math/tex; mode=display">P(B|A) = \frac{P(A\cap B)}{P(A)} = \frac{P(A|B)P(B)}{P(A)}</script>
+
+<p>Here, the denominator $P(A)$ can be viewed as <em>Normalizing Constant</em> something that ensures we always have a probability function.</p>
+
+<p>So, to evaluate this denominator,</p>
+
+<script type="math/tex; mode=display">P(A\cap B) = P(A|B)P(B)</script>
+
+<script type="math/tex; mode=display">P(A|\cap \bar{B}) = P(A| \bar{B})P(\bar{B})</script>
+
+<p>Therefore, by additivity rule,</p>
+
+<script type="math/tex; mode=display">P(A) = P(A\cap B) + P(A\cap \bar{B})</script>
+
+<script type="math/tex; mode=display">P(A)= P(A|B)P(B) + P(A| \bar{B})P(\bar{B})</script>
+
+<p>Hence, the <strong>Bayes Theorem</strong> becomes,</p>
+
+<script type="math/tex; mode=display">P(B|A) = \frac{P(A|B)P(B)}{P(A|B)P(B) + P(A| \bar{B})P(\bar{B})}</script>
+
+<blockquote>
+  <p>Example:Treasure chest A contains <em>20 Gold</em> and <em>30 Silver</em> coins, Chest B contains <em>50 Gold</em> and <em>50 Silver</em> coins. You randomly choose a treasure chest to open, and then randomly choose a coin from that treasure chest. If the coin you choose is gold, then what is the probability that you chose chest A?</p>
+</blockquote>
+
+<p>Solution:</p>
+
+<blockquote>
+  <p>Chest A = 20 Gold, 30 Silver</p>
+</blockquote>
+
+<blockquote>
+  <p>Chest B = 50 Gold, 50 Silver</p>
+</blockquote>
+
+<p>So let $P(A)$ be the probability of selecting Chest A, and $P(B)$ be the probability of selecting Chest B, and let $P(G|A)$ be the probability of selecting a Gold coint from chest A.</p>
+
+<script type="math/tex; mode=display">P(A) = \frac{1}{2}</script>
+
+<script type="math/tex; mode=display">P(B) = \frac{1}{2}</script>
+
+<script type="math/tex; mode=display">P(G|A) = \frac{20}{50} = \frac{2}{5}</script>
+
+<script type="math/tex; mode=display">P(G|B) = \frac{50}{100} = \frac{1}{2}</script>
+
+<p>So, according to <strong>Bayes Theorem</strong>,Probability of chest being A given that the coin was gold is</p>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{P(G|A)P(A)}{P(G)}</script>
+
+<p>Now, we can clearly see the problem here, we don’t have $P(G)$ but we can express it using the additive method explained above. So,</p>
+
+<script type="math/tex; mode=display">P(G) = P(A)P(G|A) + P(\bar{A})P(G|\bar{A})</script>
+
+<p>But, $\bar{A}$ in this case is $B$, hence the above equation becomes</p>
+
+<script type="math/tex; mode=display">P(G) = P(A)P(G|A) + P(B)P(G|B)</script>
+
+<p>Putting this in above Bayes formula</p>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{P(G|A)P(A)}{P(G)}</script>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{P(G|A)P(A)}{P(A)P(G|A) + P(B)P(G|B)}</script>
+
+<p>Putting the respective values in we get,</p>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{\frac{1}{2} . \frac{2}{5}}{\frac{1}{2} . \frac{2}{5} + \frac{1}{2} .\frac{1}{2}}</script>
+
+<script type="math/tex; mode=display">P(A|G) =\frac{\frac{1}{5}}{\frac{1}{5}+\frac{1}{4}}</script>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{1}{5} .\frac{20}{9}</script>
+
+<script type="math/tex; mode=display">P(A|G) = \frac{20}{45}</script>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2018-11/Basic-Notes-2" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2018-11/Basic-Notes-2" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2018-11/Basic-Notes-2" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2018-11/Basic-Notes-2" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2018-11/Basic-Notes-2" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2019 Jay Vala. Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://github.com/renyuanz/leonids/">leonids theme</a> made with <i class="fa fa-heart heart-icon"></i>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

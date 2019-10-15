@@ -1,0 +1,190 @@
+<h1 id="word-embeddings-and-its-visualizations">Word Embeddings and It’s visualizations</h1>
+
+<h2 id="creating-word-vectors">Creating Word Vectors</h2>
+<hr />
+<p>In the last post I have obtained perfect text out of the EU summaries, now the goal is to create word embeddings out of it and visualizing them in tensorboard projector. I am visualizing it right now because I want to know how to do it because I will need to visualize bilingual word embeddings when I create one to see how well the bilingual word embeddings are so that I can fine tune the process to fit best for my case.</p>
+
+<p>For creating word embeddings I will use <a href="https://radimrehurek.com/gensim/">Gensim’s</a> <a href="https://radimrehurek.com/gensim/models/word2vec.html">word2vec</a> model. So, In order to start I first need to see what <em>gensim</em> takes input as. It so happens that it takes words tokens to train word2vec. Hmm, I did not account for that in my previous post and I simply created sentence tokens, well first I need to create word tokens out of the sentences.</p>
+
+<p>I wrote this python code to do the word tokens while preserving the sentences.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">load_text</span> <span class="o">=</span><span class="p">[]</span>  <span class="c">#List to store the loaded text</span>
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">"/home/jay/Ready"</span><span class="p">):</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.txt'</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">),</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'summary'</span><span class="p">,</span><span class="s">''</span><span class="p">,</span><span class="n">contents</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>    <span class="c"># Removing the word summary</span>
+                <span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+                <span class="n">load_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now, that I have the data in the format I needed, I will run the word2vec model and create the word embedding</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gensim</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># Here I will be using logging module of python to help me see the progress and statistics.</span>
+
+<span class="c"># Let's configure the logging module </span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">'</span><span class="si">%(levelname)</span><span class="s">s : </span><span class="si">%(message)</span><span class="s">s'</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>It is important to set the logging level to <code class="highlighter-rouge">logging.INFO</code> so as to see all the details.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Now lets declare the embedding size</span>
+<span class="n">embedding_size</span> <span class="o">=</span> <span class="mi">4000</span> 
+</code></pre></div></div>
+
+<p>Embedding size here means what is the maximum number of features one want to incorporate. So, here as I don’t know what is the best one I selected the size 4000 to account for all the different words it has in the text(I wanted to go for more but my system would not allow it).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Now lets build the model and run it</span>
+<span class="n">word_model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">load_text</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+<p>There are a lot of options that you can play with in the function but I am satisfied with these. However, there is an option <code class="highlighter-rouge">iter (int)</code>  if you want to run it for more epochs(default = 5). The <code class="highlighter-rouge">min_count</code> argument is to say ignore all the words with total frequency lower than this.</p>
+
+<p>The output will look something like this</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NFO : collecting all words and their counts
+INFO : PROGRESS: at sentence <span class="c">#0, processed 0 words, keeping 0 word types</span>
+INFO : collected 16385 word types from a corpus of 1944658 raw words and 5293 sentences
+INFO : Loading a fresh vocabulary
+INFO : <span class="nv">min_count</span><span class="o">=</span>10 retains 6442 unique words <span class="o">(</span>39% of original 16385, drops 9943<span class="o">)</span>
+INFO : <span class="nv">min_count</span><span class="o">=</span>10 leaves 1916040 word corpus <span class="o">(</span>98% of original 1944658, drops 28618<span class="o">)</span>
+INFO : deleting the raw counts dictionary of 16385 items
+INFO : <span class="nv">sample</span><span class="o">=</span>0.001 downsamples 47 most-common words
+INFO : downsampling leaves estimated 1774595 word corpus <span class="o">(</span>92.6% of prior 1916040<span class="o">)</span>
+INFO : estimated required memory <span class="k">for </span>6442 words and 4000 dimensions: 209365000 bytes
+INFO : resetting layer weights
+INFO : training model with 3 workers on 6442 vocabulary and 4000 features, using <span class="nv">sg</span><span class="o">=</span>0 <span class="nv">hs</span><span class="o">=</span>0 <span class="nv">sample</span><span class="o">=</span>0.001 <span class="nv">negative</span><span class="o">=</span>5 <span class="nv">window</span><span class="o">=</span>5
+INFO : EPOCH 1 - PROGRESS: at 2.38% examples, 35588 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 4.91% examples, 38060 words/s, in_qsize 6, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 8.99% examples, 42107 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 12.34% examples, 44613 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 15.95% examples, 45907 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 19.06% examples, 45430 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 22.46% examples, 45774 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 25.17% examples, 45869 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 28.19% examples, 46279 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 31.21% examples, 46555 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 34.39% examples, 46034 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 37.29% examples, 46612 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 39.90% examples, 46921 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 42.32% examples, 46297 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 45.59% examples, 46329 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 50.48% examples, 46561 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 54.17% examples, 46626 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 57.08% examples, 46427 words/s, in_qsize 4, out_qsize 1
+INFO : EPOCH 1 - PROGRESS: at 60.25% examples, 46679 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 63.78% examples, 46823 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 65.84% examples, 46732 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 68.77% examples, 46813 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 71.74% examples, 46913 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 74.46% examples, 46662 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 77.82% examples, 46772 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 80.54% examples, 46766 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 83.49% examples, 46776 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 86.49% examples, 46701 words/s, in_qsize 6, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 89.55% examples, 46858 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 92.42% examples, 46847 words/s, in_qsize 5, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 94.90% examples, 46808 words/s, in_qsize 6, out_qsize 0
+INFO : EPOCH 1 - PROGRESS: at 98.11% examples, 46949 words/s, in_qsize 4, out_qsize 0
+INFO : worker thread finished<span class="p">;</span> awaiting finish of 2 more threads
+INFO : worker thread finished<span class="p">;</span> awaiting finish of 1 more threads
+INFO : worker thread finished<span class="p">;</span> awaiting finish of 0 more threads
+</code></pre></div></div>
+
+<p>Let’s see our vocab size</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#length of vocab</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">word_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6642
+</code></pre></div></div>
+
+<p>Now that model is trained I would save the model so that I can resume it from here and I don’t have to do this all over again.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Save the model </span>
+<span class="n">word_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>which will inform you of all the various things it saves</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO : saving Word2Vec object under english, separately None
+INFO : storing np array <span class="s1">'vectors'</span> to english.wv.vectors.npy
+INFO : not storing attribute vectors_norm
+INFO : storing np array <span class="s1">'syn1neg'</span> to english.trainables.syn1neg.npy
+INFO : saved english
+</code></pre></div></div>
+
+<h2 id="visualizing-the-word-embedding-in-tensorboard">Visualizing the word embedding in Tensorboard</h2>
+
+<hr />
+
+<p>Tensorboard is a visualizing tool that is used with <a href="https://www.tensorflow.org/">tensorflow</a> to visualize certain parameters on the go to see how well the model is performing or visualize word embedding in 3D space.</p>
+
+<p>The problem here is that the model I saved and the is not what tensorboard is familiar to work with so I had to convert this word vectors to a format that tensorboard understands.</p>
+
+<p>This is a little difficult but there is a script written by <a href="https://gist.github.com/BrikerMan/7bd4e4bd0a00ac9076986148afc06507">BrikerMan</a> which is open source and it does the thing I want.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.tensorboard.plugins</span> <span class="kn">import</span> <span class="n">projector</span>
+
+<span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="n">meta_file</span> <span class="o">=</span> <span class="s">"w2x_metadata.tsv"</span>
+    <span class="n">placeholder</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index2word</span><span class="p">),</span> <span class="mi">4000</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="n">meta_file</span><span class="p">),</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_metadata</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index2word</span><span class="p">):</span>
+            <span class="n">placeholder</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+            <span class="c"># temporary solution for https://github.com/tensorflow/tensorflow/issues/9094</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Emply Line, should replecaed by any thing else, or will cause a bug of tensorboard"</span><span class="p">)</span>
+                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">'&lt;Empty Line&gt;'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+    <span class="c"># define the model without training</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">()</span>
+
+    <span class="n">embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">placeholder</span><span class="p">,</span> <span class="n">trainable</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">'w2x_metadata'</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="c"># adding into projector</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">projector</span><span class="o">.</span><span class="n">ProjectorConfig</span><span class="p">()</span>
+    <span class="n">embed</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+    <span class="n">embed</span><span class="o">.</span><span class="n">tensor_name</span> <span class="o">=</span> <span class="s">'w2x_metadata'</span>
+    <span class="n">embed</span><span class="o">.</span><span class="n">metadata_path</span> <span class="o">=</span> <span class="n">meta_file</span>
+
+    <span class="c"># Specify the width and height of a single thumbnail.</span>
+    <span class="n">projector</span><span class="o">.</span><span class="n">visualize_embeddings</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="s">'w2x_metadata.ckpt'</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Run `tensorboard --logdir={0}` to run visualize result on tensorboard'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="s">"""
+    Just run `python w2v_visualizer.py word2vec.model visualize_result`
+    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">output_path</span>  <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Please provice model path and output path"</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'/home/jay/Saved_Models/english/english'</span><span class="p">)</span>
+<span class="n">visualize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">'/home/jay/Saved_Models/english/'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The script is very simple, what it does is, it takes the model I saved and makes a placeholder object of the size of my embeddings and starts writing tensorflow summary and checkpoints.</p>
+
+<p>Well after a little tweaking I got it to work and the results is</p>
+
+<p><img src="/images/tensorboard.png" /></p>
