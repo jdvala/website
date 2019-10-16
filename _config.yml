@@ -39,7 +39,7 @@ owner:
   bio: "Getting the basics right"
   email:
   disqus-shortname:
-  twitter: #@imJvala
+  twitter: "imJvala"
   facebook: #username
   google:
     plus: #username
@@ -48,10 +48,10 @@ owner:
     ad-client:
     ad-slot:
   bing-verify:
-  github: #jdvala
+  github: "jdvala"
   gitlab: #username
   stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
-  linkedin: #username
+  linkedin: "www.linkedin.com/in/jayvala"
   skype: #username
   xing: #username
   instagram: #username
