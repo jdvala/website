@@ -205,4 +205,4 @@ The script is very simple, what it does is, it takes the model I saved and makes
 
 Well after a little tweaking I got it to work and the results is 
 
-<img src="{{ site.baseurl }}/img/tensorboard.png">
+![img]("/img/tensorboard.png")
