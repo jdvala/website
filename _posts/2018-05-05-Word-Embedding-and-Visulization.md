@@ -205,4 +205,4 @@ The script is very simple, what it does is, it takes the model I saved and makes
 
 Well after a little tweaking I got it to work and the results is 
 
-![img]("/img/tensorboard.png")
+![img](https://github.com/jdvala/website/blob/master/img/tensorboard.png)
