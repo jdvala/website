@@ -12,20 +12,20 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">html_to_text</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
     <span class="s">"""Retruns list of lines for a given file"""</span>
     
-    <span class="c"># read the html file</span>
-    
+    <span class="c1"># read the html file
+</span>    
     <span class="n">f</span><span class="o">=</span><span class="n">codecs</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
     <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     
-    <span class="c"># Create html parser object</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">html2text</span><span class="o">.</span><span class="n">HTML2Text</span><span class="p">()</span>   <span class="c"># Html parser object</span>
-    <span class="n">h</span><span class="o">.</span><span class="n">ignore_links</span> <span class="o">=</span> <span class="bp">True</span>       <span class="c"># Ignoring all the links if there are any</span>
-    
-    <span class="n">a</span> <span class="o">=</span><span class="n">h</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>  <span class="c"># parsing the contents</span>
-    <span class="n">a</span> <span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>     <span class="c"># remove unwanted new line charaters att start and end of the file</span>
-    
-    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>      <span class="c"># return list of the sentences of the file to save</span>
-
+    <span class="c1"># Create html parser object
+</span>    <span class="n">h</span> <span class="o">=</span> <span class="n">html2text</span><span class="o">.</span><span class="n">HTML2Text</span><span class="p">()</span>   <span class="c1"># Html parser object
+</span>    <span class="n">h</span><span class="o">.</span><span class="n">ignore_links</span> <span class="o">=</span> <span class="bp">True</span>       <span class="c1"># Ignoring all the links if there are any
+</span>    
+    <span class="n">a</span> <span class="o">=</span><span class="n">h</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>  <span class="c1"># parsing the contents
+</span>    <span class="n">a</span> <span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>     <span class="c1"># remove unwanted new line charaters att start and end of the file
+</span>    
+    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>      <span class="c1"># return list of the sentences of the file to save
+</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -34,13 +34,13 @@
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">'/home/jay/Data_DE_1/'</span><span class="p">):</span>
         <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.html'</span><span class="p">):</span>
-                <span class="n">topic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>          <span class="c"># getting topic </span>
-                <span class="n">subtopic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       <span class="c"># Getting subtopic</span>
-                <span class="c"># Call the html function to convert the file</span>
-                <span class="n">to_save</span> <span class="o">=</span> <span class="n">html_to_text</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
+                <span class="n">topic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>          <span class="c1"># getting topic 
+</span>                <span class="n">subtopic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       <span class="c1"># Getting subtopic
+</span>                <span class="c1"># Call the html function to convert the file
+</span>                <span class="n">to_save</span> <span class="o">=</span> <span class="n">html_to_text</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
                 
-                <span class="c"># Save the file into a new dir</span>
-                
+                <span class="c1"># Save the file into a new dir
+</span>                
                 <span class="n">dir_to_save</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'HOME'</span><span class="p">],</span><span class="s">'html_to_text'</span><span class="p">,</span><span class="n">topic</span><span class="p">,</span> <span class="n">subtopic</span><span class="p">)</span>
                 
                 <span class="k">try</span><span class="p">:</span>
@@ -49,7 +49,7 @@
                     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_to_save</span><span class="p">)</span>
                     
                     
-                <span class="k">print</span><span class="p">(</span><span class="s">"Saving the text file to: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dir_to_save</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Saving the text file to: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">dir_to_save</span><span class="p">))</span>
                 
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dir_to_save</span><span class="o">+</span><span class="s">'/'</span><span class="o">+</span><span class="nb">file</span><span class="o">+</span><span class="s">'.txt'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">to_save</span><span class="p">))</span>

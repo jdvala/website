@@ -10,14 +10,14 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">load_text</span> <span class="o">=</span><span class="p">[]</span>  <span class="c">#List to store the loaded text</span>
-<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">"/home/jay/Ready"</span><span class="p">):</span>
+<span class="n">load_text</span> <span class="o">=</span><span class="p">[]</span>  <span class="c1">#List to store the loaded text
+</span><span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">"/home/jay/Ready"</span><span class="p">):</span>
     <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.txt'</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">),</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="n">contents</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'summary'</span><span class="p">,</span><span class="s">''</span><span class="p">,</span><span class="n">contents</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>    <span class="c"># Removing the word summary</span>
-                <span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'summary'</span><span class="p">,</span><span class="s">''</span><span class="p">,</span><span class="n">contents</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>    <span class="c1"># Removing the word summary
+</span>                <span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
                 <span class="n">load_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -26,22 +26,22 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gensim</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="c"># Here I will be using logging module of python to help me see the progress and statistics.</span>
-
-<span class="c"># Let's configure the logging module </span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">'</span><span class="si">%(levelname)</span><span class="s">s : </span><span class="si">%(message)</span><span class="s">s'</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="c1"># Here I will be using logging module of python to help me see the progress and statistics.
+</span>
+<span class="c1"># Let's configure the logging module 
+</span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s">'</span><span class="si">%(levelname)</span><span class="s">s : </span><span class="si">%(message)</span><span class="s">s'</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>It is important to set the logging level to <code class="highlighter-rouge">logging.INFO</code> so as to see all the details.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Now lets declare the embedding size</span>
-<span class="n">embedding_size</span> <span class="o">=</span> <span class="mi">4000</span> 
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Now lets declare the embedding size
+</span><span class="n">embedding_size</span> <span class="o">=</span> <span class="mi">4000</span> 
 </code></pre></div></div>
 
 <p>Embedding size here means what is the maximum number of features one want to incorporate. So, here as I don’t know what is the best one I selected the size 4000 to account for all the different words it has in the text(I wanted to go for more but my system would not allow it).</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Now lets build the model and run it</span>
-<span class="n">word_model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">load_text</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Now lets build the model and run it
+</span><span class="n">word_model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">load_text</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div></div>
 <p>There are a lot of options that you can play with in the function but I am satisfied with these. However, there is an option <code class="highlighter-rouge">iter (int)</code>  if you want to run it for more epochs(default = 5). The <code class="highlighter-rouge">min_count</code> argument is to say ignore all the words with total frequency lower than this.</p>
 
@@ -98,8 +98,8 @@ INFO : worker thread finished<span class="p">;</span> awaiting finish of 0 more 
 
 <p>Let’s see our vocab size</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#length of vocab</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">word_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#length of vocab
+</span><span class="nb">len</span><span class="p">(</span><span class="n">word_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6642
@@ -107,8 +107,8 @@ INFO : worker thread finished<span class="p">;</span> awaiting finish of 0 more 
 
 <p>Now that model is trained I would save the model so that I can resume it from here and I don’t have to do this all over again.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Save the model </span>
-<span class="n">word_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Save the model 
+</span><span class="n">word_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>which will inform you of all the various things it saves</p>
@@ -143,15 +143,15 @@ INFO : saved english
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="n">meta_file</span><span class="p">),</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_metadata</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index2word</span><span class="p">):</span>
             <span class="n">placeholder</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
-            <span class="c"># temporary solution for https://github.com/tensorflow/tensorflow/issues/9094</span>
-            <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
+            <span class="c1"># temporary solution for https://github.com/tensorflow/tensorflow/issues/9094
+</span>            <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">"Emply Line, should replecaed by any thing else, or will cause a bug of tensorboard"</span><span class="p">)</span>
-                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">'&lt;Empty Line&gt;'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="s">'&lt;Empty Line&gt;'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+                <span class="n">file_metadata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"{0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
 
-    <span class="c"># define the model without training</span>
-    <span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">()</span>
+    <span class="c1"># define the model without training
+</span>    <span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">()</span>
 
     <span class="n">embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">placeholder</span><span class="p">,</span> <span class="n">trainable</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">'w2x_metadata'</span><span class="p">)</span>
     <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -159,16 +159,16 @@ INFO : saved english
     <span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
     <span class="n">writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
 
-    <span class="c"># adding into projector</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">projector</span><span class="o">.</span><span class="n">ProjectorConfig</span><span class="p">()</span>
+    <span class="c1"># adding into projector
+</span>    <span class="n">config</span> <span class="o">=</span> <span class="n">projector</span><span class="o">.</span><span class="n">ProjectorConfig</span><span class="p">()</span>
     <span class="n">embed</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
     <span class="n">embed</span><span class="o">.</span><span class="n">tensor_name</span> <span class="o">=</span> <span class="s">'w2x_metadata'</span>
     <span class="n">embed</span><span class="o">.</span><span class="n">metadata_path</span> <span class="o">=</span> <span class="n">meta_file</span>
 
-    <span class="c"># Specify the width and height of a single thumbnail.</span>
-    <span class="n">projector</span><span class="o">.</span><span class="n">visualize_embeddings</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+    <span class="c1"># Specify the width and height of a single thumbnail.
+</span>    <span class="n">projector</span><span class="o">.</span><span class="n">visualize_embeddings</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
     <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="s">'w2x_metadata.ckpt'</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">'Run `tensorboard --logdir={0}` to run visualize result on tensorboard'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Run `tensorboard --logdir={0}` to run visualize result on tensorboard'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="s">"""
@@ -187,4 +187,4 @@ INFO : saved english
 
 <p>Well after a little tweaking I got it to work and the results is</p>
 
-<p><img src="/images/tensorboard.png" /></p>
+<p><img src="/img/tensorboard.png" /></p>

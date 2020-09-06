@@ -48,21 +48,21 @@ At the end of the programme, the Commission will appoint a group of independent 
 </span></code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c"># Let's read the file </span>
-<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
+<span class="c1"># Let's read the file 
+</span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Conservation, characterisation, collection and utilisation of genetic resources in agriculture.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-<span class="c">#NOTE: The function readlines() return a list of lines in the same format as the file is.</span>
-
+<span class="c1">#NOTE: The function readlines() return a list of lines in the same format as the file is.
+</span>
 
 <span class="k">def</span> <span class="nf">sentences</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
     <span class="s">"""Returns sentence tokenized text list"""</span>
     <span class="n">text</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
 
-    <span class="c"># Sentence tokenize with help of sent_tokenize from nltk</span>
-    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># Sentence tokenize with help of sent_tokenize from nltk
+</span>    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">sentence</span>
 </code></pre></div></div>
@@ -88,9 +88,9 @@ At the end of the programme, the Commission will appoint a group of independent 
 
 <p>Now, that we have sentence tokenize, we will make everything into a lower case.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># after_sent_token is a list.</span>
-<span class="c"># Make a new list.</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># after_sent_token is a list.
+# Make a new list.
+</span>
 <span class="n">after_lower</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">after_sent_token</span><span class="p">:</span>
@@ -113,9 +113,9 @@ At the end of the programme, the Commission will appoint a group of independent 
 
 <p>Similarly, we can do everything as we did above. The full code for english preprocessing is below.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># This preprocessing is intended for english</span>
-<span class="c"># coding: utf-8</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This preprocessing is intended for english
+# coding: utf-8
+</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -129,8 +129,8 @@ At the end of the programme, the Commission will appoint a group of independent 
     <span class="s">"""Returns sentence tokenized text list"""</span>
     <span class="n">text</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span>
 
-    <span class="c"># Sentence tokenize with help of sent_tokenize from nltk  </span>
-    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># Sentence tokenize with help of sent_tokenize from nltk  
+</span>    <span class="n">sentence</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">sentence</span>
 
@@ -138,8 +138,8 @@ At the end of the programme, the Commission will appoint a group of independent 
 <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="s">"""Returns text with all the filtering necessary"""</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"(\d+\.\d+)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
-    <span class="c">#t = re.sub(r"(\d+th?|st?|nd?|rd?)","", t)</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}.\d{2}.\d{4}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="c1">#t = re.sub(r"(\d+th?|st?|nd?|rd?)","", t)
+</span>    <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}.\d{2}.\d{4}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}\/\d{2}\/\d{4}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"\d{2}(\/|\.)\d{2}(\/|\.)\d{2}"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r"($|€|¥|₹|£)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
@@ -178,8 +178,8 @@ At the end of the programme, the Commission will appoint a group of independent 
 
     <span class="k">return</span> <span class="n">t</span>
 
-<span class="c"># Stop word removal</span>
-<span class="k">def</span> <span class="nf">stop_word</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+<span class="c1"># Stop word removal
+</span><span class="k">def</span> <span class="nf">stop_word</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
     <span class="n">list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
     <span class="n">words_list</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -195,19 +195,19 @@ At the end of the programme, the Commission will appoint a group of independent 
     <span class="s">"""Main Function"""</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Conservation, characterisation, collection and utilisation of genetic resources in agriculture.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="c"># Joining the lines to make text block </span>
-    <span class="n">contents</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="c1"># Joining the lines to make text block 
+</span>    <span class="n">contents</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"Starting to preprocess file"</span><span class="p">)</span>
-    <span class="c"># Sentence tokenize the text</span>
-    <span class="n">sent_tokenized</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
-    <span class="c"># Removing stop words</span>
-    <span class="n">t1</span> <span class="o">=</span> <span class="p">[</span><span class="n">lemmatizer</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">sent_tokenized</span><span class="p">]</span>
-    <span class="c"># lemmatization </span>
-    <span class="n">t2</span> <span class="o">=</span> <span class="p">[</span><span class="n">stop_word</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">t1</span><span class="p">]</span>
-    <span class="c"># Removing all the unnecessary things from the text </span>
-    <span class="n">t3</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t2</span><span class="p">]</span>
-    <span class="c"># Removing punctuations</span>
-    <span class="n">t4</span> <span class="o">=</span><span class="p">[</span><span class="n">pun</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t3</span><span class="p">]</span>
+    <span class="c1"># Sentence tokenize the text
+</span>    <span class="n">sent_tokenized</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="c1"># Removing stop words
+</span>    <span class="n">t1</span> <span class="o">=</span> <span class="p">[</span><span class="n">lemmatizer</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">sent_tokenized</span><span class="p">]</span>
+    <span class="c1"># lemmatization 
+</span>    <span class="n">t2</span> <span class="o">=</span> <span class="p">[</span><span class="n">stop_word</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">t1</span><span class="p">]</span>
+    <span class="c1"># Removing all the unnecessary things from the text 
+</span>    <span class="n">t3</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t2</span><span class="p">]</span>
+    <span class="c1"># Removing punctuations
+</span>    <span class="n">t4</span> <span class="o">=</span><span class="p">[</span><span class="n">pun</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">t3</span><span class="p">]</span>
 
     <span class="n">t5</span> <span class="o">=</span> <span class="p">[</span><span class="n">extras</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">t4</span><span class="p">]</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"Preprocessing done for file)</span><span class="err">

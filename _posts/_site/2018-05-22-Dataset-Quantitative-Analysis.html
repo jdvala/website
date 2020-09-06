@@ -1,0 +1,135 @@
+<h1 id="dataset-quantitative-analysis">Dataset Quantitative Analysis</h1>
+
+<p>I have got bad results after training the RNN. Hence I have decided to analyse the data set and see the distribution of samples across different classes. This may give me some idea to why my network is performing poor.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'/home/jay/Data_Set_Creation/Data_to_Use.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="o">.</span><span class="n">columns</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Index(['Sentence', 'Label', 'Numerical_Label'], dtype='object')
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">labels</span> <span class="o">=</span>  <span class="n">data</span><span class="o">.</span><span class="n">Numerical_Label</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>After the labels are into the list, I will count the number of samples in each class to see what is the distribution.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+    <span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span><span class="mi">1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({0: 8115,
+         1: 1353,
+         2: 4643,
+         3: 12267,
+         4: 14056,
+         5: 4660,
+         6: 5227,
+         7: 1520,
+         8: 3319,
+         9: 2525,
+         10: 3310,
+         11: 3438,
+         12: 2046,
+         13: 838,
+         14: 2434,
+         15: 8628,
+         16: 4052,
+         17: 1563,
+         18: 1277,
+         19: 2585,
+         20: 3561,
+         21: 4233,
+         22: 1211,
+         23: 1026,
+         24: 10869,
+         25: 3840,
+         26: 4786,
+         27: 1887,
+         28: 2151,
+         29: 917,
+         30: 1900,
+         31: 3838})
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Find the minimum class, that is class with minimum number of samples</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="o">.</span><span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>838
+</code></pre></div></div>
+
+<p>Calculating the percentage of samples in each class.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">per</span> <span class="o">=</span> <span class="p">[(</span><span class="n">val</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">per</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3.125
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sorted</span><span class="p">((</span><span class="nb">zip</span><span class="p">(</span><span class="n">per</span><span class="p">,</span> <span class="n">keys</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(0.6543041186804607, 13),
+ (0.7159867265274253, 29),
+ (0.8010931095061488, 23),
+ (0.9455397228186609, 22),
+ (0.9970720281085301, 18),
+ (1.056412258442319, 1),
+ (1.1868046066757758, 7),
+ (1.2203786843646303, 17),
+ (1.4733554557876245, 27),
+ (1.48350575834472, 30),
+ (1.5975014639859457, 12),
+ (1.6794846769471012, 28),
+ (1.9004489556900255, 14),
+ (1.9715010735896936, 9),
+ (2.0183486238532113, 19),
+ (2.5844231895373806, 10),
+ (2.5914503220769083, 8),
+ (2.684364630099551, 11),
+ (2.780402108139762, 20),
+ (2.996681631856334, 31),
+ (2.998243216865118, 25),
+ (3.163771227796213, 16),
+ (3.3050946710911577, 21),
+ (3.62521959789186, 2),
+ (3.6384930704665233, 5),
+ (3.73687292601991, 26),
+ (4.081202420456764, 6),
+ (6.336131173140738, 0),
+ (6.736677727893812, 15),
+ (8.48643373023619, 24),
+ (9.577981651376147, 3),
+ (10.97481944173336, 4)]
+</code></pre></div></div>
+
+<p>It looks like we have a very unbalanced dataset. Also the number of samples in some of the classes are very less. This was the reason why my model started overfitting after just 3 epoch.</p>
+
+<p>There are numerious way in which this problem can be takcled.</p>
+<ul>
+  <li>Increase the number of samples.</li>
+  <li>Apply Class weights while training.</li>
+  <li>Use smaller architecture for training.</li>
+</ul>
+
+<p>I will try to and apply all these in the next trail.</p>

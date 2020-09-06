@@ -26,10 +26,10 @@ There are special charaters with umlauts ä that should be converted first into 
     :return: manipulated text as str
     """</span>
     
-    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">word</span> <span class="c"># local variable</span>
-    
-    <span class="c"># Using str.replace() </span>
-    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">word</span> <span class="c1"># local variable
+</span>    
+    <span class="c1"># Using str.replace() 
+</span>    
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ä'</span><span class="p">,</span> <span class="s">'ae'</span><span class="p">)</span>
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ö'</span><span class="p">,</span> <span class="s">'oe'</span><span class="p">)</span>
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ü'</span><span class="p">,</span> <span class="s">'ue'</span><span class="p">)</span>
@@ -43,8 +43,8 @@ There are special charaters with umlauts ä that should be converted first into 
 
 <p>Lets test it on German Stop words</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words_to_use</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c"># List to hold words after conversion</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words_to_use</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># List to hold words after conversion
+</span>
 <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">german_stop_words</span><span class="p">:</span>
     <span class="n">german_stop_words_to_use</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">umlauts</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
     
@@ -97,8 +97,8 @@ Now we need to remove all the punctuations and numbers from the text. Lets do th
 <p>It looks like it covers all the punctuation, Lets remove them</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">remove_pun</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">punctuation</span><span class="p">)</span>
-<span class="n">text_wo_pun</span> <span class="o">=</span> <span class="n">new_text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">remove_pun</span><span class="p">)</span> <span class="c"># we are using native string functions as they are fast</span>
-</code></pre></div></div>
+<span class="n">text_wo_pun</span> <span class="o">=</span> <span class="n">new_text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">remove_pun</span><span class="p">)</span> <span class="c1"># we are using native string functions as they are fast
+</span></code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_pun</span>
 </code></pre></div></div>
@@ -151,8 +151,8 @@ $|€|¥|₹|£</p>
     :retrun: manipulated text as string
     """</span>
     
-    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">text</span> <span class="c"># local variable</span>
-    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">text</span> <span class="c1"># local variable
+</span>    
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'$'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'€'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
     <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'¥'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>

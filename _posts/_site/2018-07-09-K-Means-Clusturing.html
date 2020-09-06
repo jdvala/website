@@ -1,0 +1,112 @@
+<h1 id="finding-k-in-k-means">Finding K in K-Means</h1>
+
+<p>So when applying K-Means Clustring, one comes at a point where he/she has to decide how many cluster they want, now one can not go and tell 2,3, or 4 clusters there should be a some evidence that clustering the data into <em>‘k’</em> clusters will yeild good results. So I met this problem, after searching for what can be done about this problem I stumble upon a something called <strong>‘Silhouette Analysis’</strong></p>
+
+<h3 id="silhouette-analysis">Silhouette Analysis</h3>
+
+<p>Silhouette Analysis takes into considration of how well a particular data point lies within a given cluster. So lets take an example to understand how this works, Say we are using K-Means Clustring for <em>‘k’</em> number of clusters. Now for a data point <em>‘i’</em>, we define average distance from all points in the same cluster as <em>avg(i) = a(i)</em>, so we can interpret <em>a(i)</em> as measure of how well that point belongs in the cluster or to put it simply how well that point belongs in that cluster, so smaller the value, better the assignment of that data point to that cluster. Similarly, lets say <em>b(i)</em> is the average dissimlarity, that means <em>b(i)</em> the lowest average distance of data point <em>i</em>  to all points in any other cluster, of which <em>i</em> is not a member of. The cluster with this lowest average dissimilarity is said to be the “neighbouring cluster” of <em>i</em> because it is the next best fit cluster for point <em>i</em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Math</span>
+<span class="n">Math</span><span class="p">(</span><span class="s">r's(i) = \frac{b(i)-a(i)}{max(b(i),a(i))}'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<script type="math/tex; mode=display">s(i) = \frac{b(i)-a(i)}{max(b(i),a(i))}</script>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">silhouette_samples</span><span class="p">,</span> <span class="n">silhouette_score</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Getting all the english and german data
+</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="p">,</span> <span class="n">re</span>
+
+<span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">content</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">'/home/jay/Data/English/'</span><span class="p">):</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.txt'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">file</span> <span class="o">!=</span> <span class="s">'log.txt'</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+                
+
+        
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">'/home/jay/Data/German/'</span><span class="p">):</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.txt'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">file</span> <span class="o">!=</span> <span class="s">'log.txt'</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span> <span class="k">as</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># running the k-means for 32 clusters
+# creating tf-idf matrix
+</span>
+<span class="n">tfidf_matrix_constructor</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_df</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span> <span class="n">min_df</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">tfidf_matrix_constructor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># printing the shape of the resultant matrix to ensure I am right
+</span><span class="k">print</span><span class="p">(</span><span class="n">tfidf_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(9986, 59)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># now applying k-means for range 1-32 and calculating silhouette_score for each cluster
+</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="p">,</span><span class="mi">33</span><span class="p">):</span>
+    
+    <span class="c1"># define k-means constructor
+</span>    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">k</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    
+    <span class="n">cluster_labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">tfidf_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+    
+    <span class="c1"># Calculating silhouette_score for k
+</span>    
+    <span class="n">score</span> <span class="o">=</span> <span class="n">silhouette_score</span><span class="p">(</span><span class="n">tfidf_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">cluster_labels</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"The silhouette score for {} clusters is {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">score</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The silhouette score for 2 clusters is 0.2092956601357311
+The silhouette score for 3 clusters is 0.1463292693620873
+The silhouette score for 4 clusters is 0.14046381676564526
+The silhouette score for 5 clusters is 0.14694926636316893
+The silhouette score for 6 clusters is 0.14478803184773398
+The silhouette score for 7 clusters is 0.17189746569523418
+The silhouette score for 8 clusters is 0.17280711786498046
+The silhouette score for 9 clusters is 0.18248360175164505
+The silhouette score for 10 clusters is 0.185809463489821
+The silhouette score for 11 clusters is 0.19185632542163303
+The silhouette score for 12 clusters is 0.19569188868141868
+The silhouette score for 13 clusters is 0.19476772871615036
+The silhouette score for 14 clusters is 0.20251183229887623
+The silhouette score for 15 clusters is 0.19103405902025516
+The silhouette score for 16 clusters is 0.19483617751124183
+The silhouette score for 17 clusters is 0.19140067934731583
+The silhouette score for 18 clusters is 0.19934328007322114
+The silhouette score for 19 clusters is 0.19446860597424745
+The silhouette score for 20 clusters is 0.19904443285585602
+The silhouette score for 21 clusters is 0.195384733891542
+The silhouette score for 22 clusters is 0.19990294699010308
+The silhouette score for 23 clusters is 0.20434103038355314
+The silhouette score for 24 clusters is 0.20162229208943913
+The silhouette score for 25 clusters is 0.20001554425267193
+The silhouette score for 26 clusters is 0.20297321222570094
+The silhouette score for 27 clusters is 0.2023863657790054
+The silhouette score for 28 clusters is 0.19960601038803405
+The silhouette score for 29 clusters is 0.1985121190442007
+The silhouette score for 30 clusters is 0.20256036983356498
+The silhouette score for 31 clusters is 0.2001042315801357
+The silhouette score for 32 clusters is 0.20251412402591076
+</code></pre></div></div>
+
+<p>So the higher the value of Silhouette Score, better the number of clusters.</p>

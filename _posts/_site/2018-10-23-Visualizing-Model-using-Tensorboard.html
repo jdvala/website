@@ -1,0 +1,194 @@
+<h2 id="assignment-2">Assignment 2</h2>
+
+<p>In this assignment we are going to use <em>Tensorboard</em> a tool provided with tensorflow to visualize and debug(if necessary) our neural networks visually. I am going to visualize all the parameteres that have the properties which enables us to debug our neural networks or gives us a fair intution on how and what goes wrong.</p>
+
+<p>I will try and do this assignment in google colab, although it will be difficult, I will try my best.</p>
+
+<p>For using tensorboard on google colab we need something called  we just need to install a single library using pip.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">tensorboardcolab</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Requirement already satisfied: tensorboardcolab in /usr/local/lib/python3.6/dist-packages (0.0.19)
+</code></pre></div></div>
+
+<p>Now that we have everything setup and running we have to train a model to get some output on tensorboard</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="kn">from</span> <span class="nn">tensorboardcolab</span> <span class="kn">import</span> <span class="n">TensorBoardColab</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Using TensorFlow backend.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Getting MNIST
+# uploading the data
+</span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>
+<span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Now that the data is loaded, I will create train set and test set from these files and then convert the labels into <em>One-hot encoded ones</em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'mnist_train.csv'</span><span class="p">)</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'mnist_test.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Seperating labels from the training and testing data
+</span><span class="n">train</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">values</span>
+<span class="n">trainSet</span> <span class="o">=</span> <span class="n">train</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">trainLabel</span> <span class="o">=</span> <span class="n">train</span><span class="p">[:,:</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">values</span>
+<span class="n">testSet</span> <span class="o">=</span> <span class="n">test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">testLabel</span> <span class="o">=</span> <span class="n">test</span><span class="p">[:,:</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># converting labels into one-hot-encoded values
+</span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="n">le</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s">'ignore'</span><span class="p">)</span>
+
+<span class="n">le</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainLabel</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">trainLabels</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">trainLabel</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="n">testLabels</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">testLabel</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Now defining the weights and baises. The input layer have no weight and no baise, 
+# and as I am creating a network with two hidden layer I will create weight and bais for hidden layer and output layer
+# These weight are 2D arrays and baises are 1D arrays
+</span>
+<span class="n">hidden_1_Weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">256</span><span class="p">]),</span><span class="n">name</span><span class="o">=</span><span class="s">'weight_hidden_layer1'</span><span class="p">)</span>  <span class="c1"># here we need to define what input this layer will be getting and what will be its output(This output is actually the number of hidden units this layer will have)
+</span><span class="n">hidden_2_Weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'weight_hidden_layer2'</span><span class="p">)</span>
+<span class="n">outputWeight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">256</span><span class="p">,</span> <span class="mi">10</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'weight_output'</span><span class="p">)</span>   <span class="c1"># here the input to this layer will be the output of previous layer i.e. 256 and its output will be number of classes it will predict i.e. 10
+</span>
+<span class="c1"># biases
+</span><span class="n">hidden_1_Bias</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">256</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'bais_hidden_layer1'</span><span class="p">)</span>
+<span class="n">hidden_2_Bias</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">256</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'bais_hidden_layer2'</span><span class="p">)</span>
+<span class="n">outputBias</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">10</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'bais_output'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now as the model weights and baises are completly defined, I will now add summaries to be displayed on tensorboard. So we have different summary options for different things, for example, we have <code class="highlighter-rouge">tf.summary.scalar</code> for displaying single values such as loss, accuracy and then we have <code class="highlighter-rouge">tf.summary.histogram</code> to visualize matries such as weights and baises . Also we can visualize layer activations and all other variables, but for the scope of this assignment I will only focus on a few of them.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># # Adding summaries
+</span><span class="n">hist_hidden_1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s">'hidden_1_weight'</span><span class="p">,</span> <span class="n">hidden_1_Weight</span><span class="p">)</span>
+<span class="n">hist_hidden_2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s">'hidden_2_weight'</span><span class="p">,</span> <span class="n">hidden_2_Weight</span><span class="p">)</span>
+<span class="n">output_layer_hist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s">'Output_Weight'</span><span class="p">,</span> <span class="n">outputWeight</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># PlaceHolders
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'input_placeholder'</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'class_placeholder'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Lets define the function for multilayer perceptron
+</span><span class="k">def</span> <span class="nf">perceptron</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+     <span class="c1"># Hidden fully connected layer with 128 neurons
+</span>    <span class="n">layer_1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hidden_1_Weight</span><span class="p">),</span> <span class="n">hidden_1_Bias</span><span class="p">))</span>
+    <span class="c1"># Hidden fully connected layer with 128 neurons
+</span>    <span class="n">layer_2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_1</span><span class="p">,</span> <span class="n">hidden_2_Weight</span><span class="p">),</span> <span class="n">hidden_2_Bias</span><span class="p">))</span>
+    <span class="c1"># Output fully connected layer with a neuron for each class
+</span>    <span class="n">out_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_2</span><span class="p">,</span> <span class="n">outputWeight</span><span class="p">)</span> <span class="o">+</span> <span class="n">outputBias</span>
+    
+    <span class="k">return</span> <span class="n">out_layer</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># build the network
+</span><span class="n">output</span> <span class="o">=</span> <span class="n">perceptron</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>For this assignment I am also going to calculate accuracy on  each step or epoch just for visualization.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Evaluate model
+</span><span class="n">correct_pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">output</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_pred</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+
+<span class="c1"># adding accuracy scalar to the tensorboard
+</span><span class="n">accuracy_vis</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s">'accu'</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define loss and optimizer
+</span><span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits_v2</span><span class="p">(</span><span class="n">logits</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">Y</span><span class="p">))</span> 
+<span class="n">loss_vis</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s">'loss'</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span> 
+<span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+<span class="c1"># Initializing the variables
+</span><span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Merge all summaries into a single operator
+</span><span class="n">merged_summary</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">merge_all</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">def</span> <span class="nf">batches</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span><span class="n">batch_size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">batch_size</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">],</span> <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summary_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="s">'/content/log'</span><span class="p">,</span><span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Launch the graph
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    
+    <span class="n">total_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)</span><span class="o">//</span><span class="n">batch_size</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">total_batches</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">avg_cost</span> <span class="o">=</span> <span class="mi">0</span>
+      
+        <span class="c1"># Loop over all batches
+</span>        <span class="n">batchedData</span>  <span class="o">=</span> <span class="n">batches</span><span class="p">(</span><span class="n">trainSet</span><span class="p">,</span><span class="n">trainLabels</span><span class="p">,</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">batch_data</span> <span class="ow">in</span> <span class="n">batchedData</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span><span class="n">c</span><span class="p">,</span> <span class="n">summary_</span><span class="p">,</span><span class="n">acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">merged_summary</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">batch_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">Y</span><span class="p">:</span> <span class="n">batch_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+            <span class="c1"># run summary and accuracy 
+</span>            <span class="c1">#summary = sess.run([],feed_dict={X: batch_data[0], Y: batch_data[1]})
+</span>            
+            <span class="c1"># Compute average loss
+</span>            <span class="n">avg_cost</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">total_batches</span>
+            
+            <span class="c1"># write all the data to the file
+</span>            <span class="n">summary_writer</span><span class="o">.</span><span class="n">add_summary</span><span class="p">(</span><span class="n">summary_</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+        <span class="c1"># Display logs per epoch step
+</span>        <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Epoch:"</span><span class="p">,</span> <span class="s">'</span><span class="si">%04</span><span class="s">d'</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="s">"cost={:.9f} accuracy={:.2f}</span><span class="si">%</span><span class="s">"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">avg_cost</span><span class="p">,</span><span class="n">acc</span><span class="o">*</span><span class="mi">100</span> <span class="p">))</span>
+            
+            
+    <span class="k">print</span><span class="p">(</span><span class="s">"Optimization Finished!"</span><span class="p">)</span>
+    <span class="c1"># Test model
+</span>    <span class="n">pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>  <span class="c1"># Apply softmax to logits
+</span>    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># Calculate accuracy
+</span>    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="s">"float"</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Accuracy:"</span><span class="p">,</span> <span class="n">accuracy</span><span class="o">.</span><span class="nb">eval</span><span class="p">({</span><span class="n">X</span><span class="p">:</span> <span class="n">testSet</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">testLabels</span><span class="p">}))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>599
+Epoch: 0001 cost=343591.474908259 accuracy=84.85%
+Epoch: 0002 cost=1363.470883059 accuracy=89.90%
+Epoch: 0003 cost=353.140610641 accuracy=93.94%
+Epoch: 0004 cost=145.729113662 accuracy=96.97%
+Epoch: 0005 cost=71.671148529 accuracy=98.99%
+Epoch: 0006 cost=48.250662688 accuracy=96.97%
+Epoch: 0007 cost=34.012532867 accuracy=98.99%
+Epoch: 0008 cost=32.737998139 accuracy=95.96%
+Epoch: 0009 cost=29.617493640 accuracy=98.99%
+Epoch: 0010 cost=28.458745954 accuracy=96.97%
+Optimization Finished!
+Accuracy: 0.93049306
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tbc</span><span class="o">=</span><span class="n">TensorBoardColab</span><span class="p">(</span><span class="n">graph_path</span><span class="o">=</span><span class="s">'/content/log'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Wait for 8 seconds...
+TensorBoard link:
+http://4304f716.ngrok.io
+</code></pre></div></div>
+
+<p>Now you can copy the above link or click <a href="http://4304f716.ngrok.io">here</a> to visit tensorboard page and explore how the training is done.</p>

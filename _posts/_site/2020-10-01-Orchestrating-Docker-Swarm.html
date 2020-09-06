@@ -1,0 +1,271 @@
+<p>Initalize a swarm on a node which you can prefer, to create a manager. The architecture of the docker swarm orchestration is that it has a manager node (which is a whole node or computer). Then there are worker nodes which can be controlled or manage by the manager node.</p>
+
+<p><img src="https://camo.githubusercontent.com/2414d3a74f17d5601aa0abb140ca97ea3eab8ad4/68747470733a2f2f692e706f7374696d672e63632f4d4b4850383959792f737761726d2e6a7067" alt="Architecture" /></p>
+
+<p>(image: https://blog.knoldus.com/orchestration-with-docker-swarm/)</p>
+
+<p>In the diagram above the swam manager is a node which is used to control the swam nodes. In general terminology swarm manager is refered to as <code class="highlighter-rouge">manager</code> and the swarm nodes are refered to as <code class="highlighter-rouge">workers</code> or <code class="highlighter-rouge">worker nodes</code>.</p>
+
+<h3 id="create-a-swarm">Create a swarm</h3>
+
+<p>To create a swam first we need to create a manager. SSH into a machine and run the command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker swarm init <span class="nt">--advertise-addr</span> &lt;ip-address&gt;
+</code></pre></div></div>
+
+<p>In the above command we tell docker to initalize a docker swarm for us, but when we want to manage the worker nodes or when we want to communicate with the worker nodes we need an <code class="highlighter-rouge">IP</code> address for the manager to publish in order for workers to connect to our managers, so the command argument <code class="highlighter-rouge">--advertise-addr</code> will advertise the <code class="highlighter-rouge">IP</code> address that follows the command for workder nodes of other managers to connect to this manager node.</p>
+
+<blockquote>
+  <p>In case we want to use only one node, we can simply run <code class="highlighter-rouge">docker swarm init</code></p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker swarm init <span class="nt">--advertise-addr</span> 192.168.0.23 
+Swarm initialized: current node <span class="o">(</span>v6l24ilbz1bq72ad8tklhipxx<span class="o">)</span> is now a manager.
+
+To add a worker to this swarm, run the following <span class="nb">command</span>:
+
+    docker swarm <span class="nb">join</span> <span class="nt">--token</span> SWMTKN-1-04i6f00j63iyiqts65tynfapes4qx6bhxap21lod0k69jzmol3-5tjti3fxaqg94qkv3zf86k6ai 192.168.0.23:2377
+
+To add a manager to this swarm, run <span class="s1">'docker swarm join-token manager'</span> and follow the instructions.
+</code></pre></div></div>
+
+<p>Now we can use <code class="highlighter-rouge">docker info</code> to display the information about the current state or our swarm.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker info
+
+Client:
+ Debug Mode: <span class="nb">false
+ </span>Plugins:
+  app: Docker App <span class="o">(</span>Docker Inc., v0.9.1-beta3<span class="o">)</span>
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 1
+ Server Version: 19.03.11
+ Storage Driver: overlay2
+  Backing Filesystem: xfs
+  Supports d_type: <span class="nb">true
+  </span>Native Overlay Diff: <span class="nb">true
+ </span>Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: <span class="nb">local
+  </span>Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file <span class="nb">local </span>logentries splunk syslog
+ Swarm: active
+  NodeID: v6l24ilbz1bq72ad8tklhipxx
+  Is Manager: <span class="nb">true
+  </span>ClusterID: 6a4b0em1ndyg52odc43guyr1i
+  Managers: 1
+  Nodes: 2
+  Default Address Pool: 10.0.0.0/8  
+  SubnetSize: 24
+  Data Path Port: 4789
+  Orchestration:
+   Task History Retention Limit: 5
+  Raft:
+   Snapshot Interval: 10000
+   Number of Old Snapshots to Retain: 0
+   Heartbeat Tick: 1
+   Election Tick: 10
+  Dispatcher:
+   Heartbeat Period: 5 seconds
+  CA Configuration:
+   Expiry Duration: 3 months
+   Force Rotate: 0
+  Autolock Managers: <span class="nb">false
+  </span>Root Rotation In Progress: <span class="nb">false
+  </span>Node Address: 192.168.0.23
+  Manager Addresses:
+   192.168.0.23:2377
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 7ad184331fa3e55e52b890ea95e65ba581ae3429
+ runc version: dc9208a3303feef5b3839f4323d9beb36df0a9dd
+ init version: fec3683
+ Security Options:
+  apparmor
+  seccomp
+   Profile: default
+ Kernel Version: 4.4.0-186-generic
+ Operating System: Alpine Linux v3.12 <span class="o">(</span>containerized<span class="o">)</span>
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 31.4GiB
+ Name: node1
+ ID: XHBK:ACSE:UHWV:LFEY:MCE2:BAOA:775R:DK6P:CBYL:3RDJ:2WHV:QQ4M
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: <span class="nb">true
+  </span>File Descriptors: 38
+  Goroutines: 164
+  System Time: 2020-09-01T08:25:22.272726765Z
+  EventsListeners: 0
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: <span class="nb">true
+ </span>Insecure Registries:
+  127.0.0.1
+  127.0.0.0/8
+ Live Restore Enabled: <span class="nb">false
+ </span>Product License: Community Engine
+
+WARNING: API is accessible on http://0.0.0.0:2375 without encryption.
+         Access to the remote API is equivalent to root access on the host. Refer
+         to the <span class="s1">'Docker daemon attack surface'</span> section <span class="k">in </span>the documentation <span class="k">for
+         </span>more information: https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+WARNING: No swap limit support
+WARNING: bridge-nf-call-iptables is disabled
+WARNING: bridge-nf-call-ip6tables is disabled
+</code></pre></div></div>
+
+<p>we can also run <code class="highlighter-rouge">docker node ls</code> to see information about all the nodes.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node <span class="nb">ls
+
+</span>ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+v6l24ilbz1bq72ad8tklhipxx <span class="k">*</span>   node1               Ready               Active              Leader              19.03.11
+pw51r1us9l1ou62pdh3ff3dp2     node2               Ready               Active                                  19.03.11
+</code></pre></div></div>
+
+<blockquote>
+  <p>The * indicates we are connected to the that node.</p>
+</blockquote>
+
+<h3 id="add-nodes-to-the-swarm">Add nodes to the swarm</h3>
+
+<p>To add nodes to the swarm run the command displayed when we initalized the swarm.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker swarm <span class="nb">join</span> <span class="nt">--token</span> SWMTKN-1-04i6f00j63iyiqts65tynfapes4qx6bhxap21lod0k69jzmol3-5tjti3fxaqg94qkv3zf86k6ai 192.168.0.23:2377
+</code></pre></div></div>
+
+<p>This will spawn up a node (worker). Please note that this command has to be run on a different physical computer. Also the <code class="highlighter-rouge">IP</code> address specified <code class="highlighter-rouge">192.168.0.23:2377</code> should be accessible to this machine where we are spawning a worker node.</p>
+
+<p>If the command from the init swarm command is not accessible you can run <code class="highlighter-rouge">docker swarm join-token worker</code> to get the command.</p>
+
+<p>Once the node is setup. We can use <code class="highlighter-rouge">docker node ls</code> to see how many nodes we have. I had already setup a node so you can see the output in my previous <code class="highlighter-rouge">docker node ls</code> command.</p>
+
+<h3 id="deploy-a-service">Deploy a service</h3>
+
+<p>I will run a simple <code class="highlighter-rouge">helloworld</code> program which will ping <code class="highlighter-rouge">google.com</code></p>
+
+<p>To create a service we use <code class="highlighter-rouge">docker service create</code> command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker create servec <span class="nt">--replica</span> 3 <span class="nt">--name</span> helloworld alpine ping jayvala.in
+</code></pre></div></div>
+
+<p>The above command will create a service named <code class="highlighter-rouge">helloworld</code> with base image as <code class="highlighter-rouge">alpine</code> and the command as the last argument <code class="highlighter-rouge">ping google.com</code></p>
+
+<p>The <code class="highlighter-rouge">replicas</code> flag is important here. It specifices on how many instances we want to run this services. Its good practice to have more than one replica as it helps in high availibility.</p>
+
+<blockquote>
+  <p>For the swarm manager too can be an instance so once you execute this command it can spawn the service on manager too.</p>
+</blockquote>
+
+<p>We can use <code class="highlighter-rouge">docker service ls</code> command to see the list of services running.</p>
+
+<p>To inspect the service running on our swarm we can use</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker service inspect <span class="nt">--pretty</span> helloworld
+
+ID:             cnpv2ykky1lmm5vpdd9id0u0q
+Name:           helloworld
+Service Mode:   Replicated
+ Replicas:      3
+Placement:
+UpdateConfig:
+ Parallelism:   1
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: 0
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:   1
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: 0
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:         alpine:latest@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321
+ Args:          ping jayvala.com 
+ Init:          <span class="nb">false
+</span>Resources:
+Endpoint Mode:  vip
+</code></pre></div></div>
+
+<p>Now lets see which nodes in our swarm is running our helloworld service</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker service ps helloworld
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+zl1z36sfzr50        helloworld.1        alpine:latest       node2               Running             Running 4 minutes ago                       
+b3pb76uuvpsi        helloworld.2        alpine:latest       node1               Running             Running 4 minutes ago                       
+21y3swo9n8cj        helloworld.3        alpine:latest       node2               Running             Running 4 minutes ago                       
+</code></pre></div></div>
+<p>As we can see that we have 3 helloworld services running, one on <code class="highlighter-rouge">node 1</code> and two on <code class="highlighter-rouge">node 2</code>.</p>
+
+<p>Now as the users consuming this services increase we would want to scale up these services.</p>
+
+<h3 id="scale-up-the-service">Scale up the service</h3>
+
+<p>To scale up the we can use the following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service scale &lt;service name&gt;<span class="o">=</span>&lt;number of tasks&gt;
+</code></pre></div></div>
+
+<p>We can se here that we can replicate the tasks (a task is nothing but a single instance of a service).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service scale <span class="nv">helloworld</span><span class="o">=</span>10
+
+helloworld scaled to 10
+overall progress: 10 out of 10 tasks 
+1/10: running   <span class="o">[==================================================&gt;]</span> 
+2/10: running   <span class="o">[==================================================&gt;]</span> 
+3/10: running   <span class="o">[==================================================&gt;]</span> 
+4/10: running   <span class="o">[==================================================&gt;]</span> 
+5/10: running   <span class="o">[==================================================&gt;]</span> 
+6/10: running   <span class="o">[==================================================&gt;]</span> 
+7/10: running   <span class="o">[==================================================&gt;]</span> 
+8/10: running   <span class="o">[==================================================&gt;]</span> 
+9/10: running   <span class="o">[==================================================&gt;]</span> 
+10/10: running   <span class="o">[==================================================&gt;]</span> 
+verify: Service converged 
+</code></pre></div></div>
+
+<p>The above command started 10 more replicas of the helloworld services.</p>
+
+<p>Now to see which nodes are running how many process we can simply use</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service ps helloworld
+
+<span class="nv">$ </span>docker service ps helloworld
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                ERROR               PORTS
+zl1z36sfzr50        helloworld.1        alpine:latest       node2               Running             Running 11 minutes ago                           
+b3pb76uuvpsi        helloworld.2        alpine:latest       node1               Running             Running 11 minutes ago                           
+21y3swo9n8cj        helloworld.3        alpine:latest       node2               Running             Running 11 minutes ago                           
+5e650ivizaet        helloworld.4        alpine:latest       node2               Running             Running about a minute ago                       
+2u0cz08jp9sk        helloworld.5        alpine:latest       node1               Running             Running about a minute ago                       
+011vnxwzyjd3        helloworld.6        alpine:latest       node2               Running             Running about a minute ago                       
+drwrg7ixa42p        helloworld.7        alpine:latest       node1               Running             Running about a minute ago                       
+mcl513va9pes        helloworld.8        alpine:latest       node1               Running             Running about a minute ago                       
+6c7lwv522f4x        helloworld.9        alpine:latest       node2               Running             Running about a minute ago                       
+4441rdl391rv        helloworld.10       alpine:latest       node1               Running             Running about a minute ago      
+</code></pre></div></div>
+
+<p>Now on manager node we can do <code class="highlighter-rouge">docker ps</code> and it will list out all the tasks its been running, we can do the same on any node.</p>
+
+<h3 id="deleting-the-service">Deleting the service</h3>
+
+<p>To remove the service completely we can use</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service <span class="nb">rm </span>helloworld
+</code></pre></div></div>
+
+<p>Now we can run the command <code class="highlighter-rouge">docker ps</code> to verify all our services are deleted or not.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</code></pre></div></div>
