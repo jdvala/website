@@ -13,7 +13,7 @@ There were a lot of discrepancies in the dataset I created in the [last step](ht
 
 I have used a technique called [Sliding Window Protocol](https://en.wikipedia.org/wiki/Sliding_window_protocol) here is the brief example of how this is used here for breaking long sentences into smaller ones of fixed size.
 
-<img src="{{ site.baseurl }}/images/sliding_window.png">
+![slidingWindow](https://drive.google.com/file/d/1g-S0RW1RJ7DTB3x_ccMv4EskDdSHTY-J/view?usp=sharing)
 
 All the code will be the same from the [last step](https://jdvala.github.io/blog.io/thesis/2018/05/15/Data-Set-Creation.html) but there will be a small change.
 
