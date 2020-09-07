@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Preprocessing and cleaning of German text corpus.">
+  <meta name="keywords" content="blog and jekyll">
+  <meta name="author" content="German Text Preprocessing | Jay Vala">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="German Text Preprocessing | Jay Vala">
+  <meta name="twitter:description" content="Preprocessing and cleaning of German text corpus.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2018-05/German-Preprocessing">
+  <meta property="og:title" content="German Text Preprocessing | Jay Vala">
+  <meta property="og:description" content="Preprocessing and cleaning of German text corpus.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>German Text Preprocessing | Jay Vala</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2018-05/German-Preprocessing">
+  <link rel="alternate" type="application/rss+xml" title="Jay Vala" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/">
+    <img src="http://localhost:4000/img/me.png" alt="" class="avatar">
+  </a>
+  
+  <a href="http://localhost:4000/" class="author_name">Jay Vala</a>
+  <span class="author_job">Junior Data Scientist @scoutbee</span>
+  <span class="author_bio mbm">Getting the basics right</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+    <li><a href="http://twitter.com/imJvala" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/jayvala" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/jdvala" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="German Text Preprocessing">German Text Preprocessing</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        11 MAY 2018
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    38 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="steps-involved-in-preprocessing-german-text">Steps involved in preprocessing German Text</h1>
+
+<p>German preprocessing of text is a little different than English text.
+There are special charaters with umlauts ä that should be converted first into its native form(‘ä’ to ‘ae’), this is a charater level replacement so it will need time.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span><span class="p">,</span> <span class="n">re</span><span class="p">,</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'german'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">german_stop_words</span><span class="p">)</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'würden'
+</code></pre></div></div>
+
+<p>As we can see that even the stop words have those umlauts so we need to convert those too</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">umlauts</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="s">"""
+    Replace umlauts for a given text
+    
+    :param word: text as string
+    :return: manipulated text as str
+    """</span>
+    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">word</span> <span class="c1"># local variable
+</span>    
+    <span class="c1"># Using str.replace() 
+</span>    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ä'</span><span class="p">,</span> <span class="s">'ae'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ö'</span><span class="p">,</span> <span class="s">'oe'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ü'</span><span class="p">,</span> <span class="s">'ue'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'Ä'</span><span class="p">,</span> <span class="s">'Ae'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'Ö'</span><span class="p">,</span> <span class="s">'Oe'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'Ü'</span><span class="p">,</span> <span class="s">'Ue'</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'ß'</span><span class="p">,</span> <span class="s">'ss'</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">tempVar</span>
+</code></pre></div></div>
+
+<p>Lets test it on German Stop words</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words_to_use</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># List to hold words after conversion
+</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">german_stop_words</span><span class="p">:</span>
+    <span class="n">german_stop_words_to_use</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">umlauts</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
+    
+</code></pre></div></div>
+
+<p>Lets see if it worked</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">german_stop_words_to_use</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">german_stop_words_to_use</span><span class="p">)</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'wuerden'
+</code></pre></div></div>
+
+<p>It worked so lets do it on a file from German Cropus and see it it works there as well</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'/home/jay/GERMAN_CORPUS/READY_Parsed/agriculture/Agriculture/Bulgarien.html.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In ihrer Stellungnahme vom Juli 1997 war die Europäische Kommission zu der Auffassung gelangt, dass Bulgarien mit der Angleichung seiner Rechtsvorschriften an den gemeinschaftlichen Besitzstand noch sehr wenig vorangekommen ist. Bevor Bulgarien die aus einer Mitgliedschaft erwachsenden Pflichten übernehmen könne, seien grundlegende Reformen in seiner Agrarpolitik erforderlich. Der Bericht vom November 1998 hielt gewisse Fortschritte im Hinblick auf die kurzfristigen Prioritäten der Beitrittspartnerschaft fest. Auch die Liberalisierung der Agrarpreise und die Beseitigung der Ausfuhrabgaben und nichtmengenmäßigen Ausfuhrbeschränkungen wurde vorangetrieben. In vielen Bereichen wurden jedoch weitere Anstrengungen verlangt, so unter anderem bei der Landreform. Im Bericht vom Oktober 1999 wurden zwar Fortschritte bei der Angleichung, insbesondere im Agrarsektor, festgestellt, aber die wirksame Anwendung der in nationales Recht umgesetzten Maßnahmen ist hauptsächlich auf Grund fehlender finanzieller Mittel weiterhin mit Schwierigkeiten verbunden. Es sind noch weitere Anstrengungen erforderlich, insbesondere im Bereich der Tierhaltung und des Bodenmarkts. In der Fischereipolitik hat Bulgarien seine ersten Maßnahmen erlassen. Es hat auch die meisten UN-Übereinkommen und Konventionen im Fischereisektor unterzeichnet und einige davon ratifiziert. Im Bericht vom November 2000 wurden die beträchtlichen Fortschritte dargestellt, die Bulgarien im Agrarsektor gemacht hat, vor allem im Wein- und im Getreidesektor. Jedoch gibt es nur wenig private Investitionen, gibt es noch keinen transparenten funktionierenden Grundstücksmarkt und entsprechen die Rechtsvorschriften über die gemeinsamen Marktorganisationen noch nicht der GAP. In den Bereichen Tier- und Pflanzengesundheit sind Rechtsvorschriften erlassen worden, aber die zu ihrer Durchführung eingesetzten technischen Mittel und Humanressourcen reichen noch nicht aus. Im Bereich der Fischerei wird Bulgarien noch erhebliche Anstrengungen unternehmen müssen, um den gemeinschaftlichen Besitzstand umzusetzen und die Gemeinsame Fischereipolitik anwenden zu können. Aus dem Bericht vom November 2001 geht hervor, dass Bulgarien zufrieden stellende Fortschritte bei der Rechtsangleichung erzielt hat. Die SAPARD- Stelle hat eine teilweise Akkreditierung von der Europäischen Kommission erhalten. Im Bereich der Fischerei ist mit der Verabschiedung des Fischerei- und Aquakulturgesetzes im April 2001 ein wesentlicher Fortschritt erzielt worden. Außerdem sind nicht zu vernachlässigende Verbesserungen auf institutioneller und operationeller Ebene festgestellt worden. So ist die Verwaltungskapazität im Bereich der Ressourcenbewirtschaftung, -inspektion und -kontrollen verstärkt worden und wurden gute Fortschritte bei der Schaffung des Fangflottenregisters gemacht. Im Bericht vom Oktober 2002 werden die von Bulgarien im Bereich der Rechtsangleichung und des Aufbaus des institutionellen Rahmens gemachten Fortschritte betont. Dagegen sind bei der Umsetzung der Rechtsvorschriften keine solchen Fortschritte verzeichnet worden. Im Bereich der Fischerei sind bei der Verabschiedung und Umsetzung der Gemeinsamen Fischereipolitik Bemühungen unternommen worden. Aus dem Bericht vom November 2003 geht hervor, dass Bulgarien bei den horizontalen Fragen gute Fortschritte erzielt hat, bei der Einführung der gemeinsamen Marktorganisationen jedoch in Verzug geraten ist. Bei der Entwicklung des ländlichen Raums sowie dem Veterinär- und dem Pflanzenschutzsektor sind Fortschritte gemacht worden. Im Bereich der Fischerei hat Bulgarien seit dem letzten Bericht zahlreiche Bemühungen unternommen. Dem Bericht vom Oktober 2004 zufolge waren Fortschritte bei der Angleichung an den gemeinschaftlichen Besitzstand und der Verstärkung der Verwaltungskapazitäten erzielt worden. Bulgarien hatte auch bei den horizontalen Fragen wie der Anwendung des EAGFL und der Entwicklung der gemeinsamen Marktorganisationen gute Fortschritte gemacht. Im Bericht vom Oktober 2005 wird festgestellt, dass Bulgarien die Verpflichtungen und Anforderungen erfüllt, die sich auch den Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben. Bei den operativen Systemen sowie im Veterinärbereich sind jedoch größere Anstrengungen notwendig. Im Bereich der Fischerei müssen bei der Bewirtschaftung der Ressourcen und dem Erlass der Rechtsvorschriften über die Marktpolitik noch Fortschritte gemacht werden. Der Beitrittsvertrag wurde am 25. April 2005 unterzeichnet und der Beitritt fand am 1. Januar 2007 statt. GEMEINSCHAFTLICHER BESITZSTAND Die Gemeinsame Agrarpolitik (GAP) zielt darauf ab, ein modernes Agrarsystem zu erhalten und zu entwickeln, der landwirtschaftlichen Bevölkerung eine angemessene Lebenshaltung zu gewährleisten, für eine Belieferung der Verbraucher zu angemessenen Preisen Sorge zu tragen und den freien Warenverkehr innerhalb der Europäischen Gemeinschaft zu verwirklichen. Das Europa-Abkommen bildet den Rechtsrahmen für den Handel mit Agrarerzeugnissen zwischen Bulgarien und der Europäischen Gemeinschaft und zielt auf eine verstärkte Zusammenarbeit bei der Modernisierung, Umstrukturierung und Privatisierung der bulgarischen Landwirtschaft und Agro- Nahrungsmittelindustrie sowie bei den Pflanzenschutznormen ab. Das Weißbuch über die Staaten Mittel- und Osteuropas und den Binnenmarkt (1995) deckt die Rechtsvorschriften in den Bereichen Veterinär-, Pflanzenschutz- und Futtermittelkontrollen sowie Bestimmungen für die Vermarktung der Erzeugnisse ab. Mit diesen Rechtsvorschriften sollen der Schutz der Verbraucher, der öffentlichen Gesundheit sowie der Tier- und Pflanzengesundheit gewährleistet werden. Die Gemeinsame Fischereipolitik umfasst die gemeinsame Marktorganisation, die Strukturpolitik, die Abkommen mit Drittländern, die Bewirtschaftung und Erhaltung der Fischereiressourcen und die wissenschaftliche Forschung auf diesem Gebiet. Das Europa-Abkommen enthält Bestimmungen über den Handel mit Fischereierzeugnissen zwischen der Gemeinschaft und Bulgarien. Das Weißbuch sieht keine Maßnahmen in diesem Sektor vor. BEWERTUNG DER LAGE Landwirtschaft Bulgarien hat die Verhandlungen über dieses Kapitel vorläufig abgeschlossen und ist in den Genuss einiger Übergangsregelungen gekommen. Im Allgemeinen hält es die Verpflichtungen ein und entspricht den Anforderungen, die sich aus den Beitrittsverhandlungen ergeben. Bei der Einrichtung der Zahlstelle ist kein Fortschritt gemacht worden: die diesbezüglichen Rechtsvorschriften müssen noch erlassen werden. Außerdem muss ein Integriertes Verwaltungs- und Kontrollsystem (INVEKOS) eingeführt werden. Die für die gemeinsamen Marktorganisationen (GMO) erforderlichen Strukturen sind noch nicht vorhanden. Bei den Rechtsvorschriften sind keine Fortschritte im Milchsektor zu verzeichnen, dagegen jedoch in den Sektoren Wein, Zucker sowie Obst und Gemüse. Im Bereich der Politik zur Entwicklung des ländlichen Raums wurde dem Land eine dreijährige Übergangszeit gewährt. Außerdem sind besondere Anstrengungen im Bereich der Rechtsangleichung im Veterinärbereich zu unternehmen, insbesondere durch den Erlass des Veterinärrahmengesetzes. Die Anstrengungen müssen dringend auf die Tierseuchenbekämpfung, den Handel mit lebenden Tieren und Erzeugnissen tierischen Ursprungs, die den Veterinärbereich betreffenden Gesundheitsvorschriften und das Wohlbefinden der Tiere konzentriert werden. Fischerei Insgesamt wird festgestellt, dass Bulgarien seinen Verpflichtungen nachkommt und den sich aus den Beitrittsverhandlungen im Bereich der staatlichen Beihilfen und der internationalen Fischereiabkommen ergebenden Anforderungen genügt. Verstärkte Anstrengungen sind jedoch in den Bereichen Bestandsbewirtschaftung und Flottenmanagement erforderlich, indem die Überwachungs- und Kontrollinstrumente konsolidiert werden, einschließlich der Einführung des Systems zur Überwachung der Schiffe. Es sind Fortschritte erforderlich, um die gemeinsamen Marktorganisationen (GMO) und die für die Verwaltung und Überwachung dieses Sektors erforderlichen Verwaltungskapazitäten zu entwickeln. Die Verhandlungen über dieses Kapitel sind vorläufig abgeschlossen und Bulgarien hat keine
+</code></pre></div></div>
+
+<p>So let’s call the umlaut function and see if it makes any difference here</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_text</span> <span class="o">=</span> <span class="n">umlauts</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_text</span> <span class="o">=</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">new_text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">new_text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In ihrer Stellungnahme vom Juli 1997 war die Europaeische Kommission zu der Auffassung gelangt, dass Bulgarien mit der Angleichung seiner Rechtsvorschriften an den gemeinschaftlichen Besitzstand noch sehr wenig vorangekommen ist. Bevor Bulgarien die aus einer Mitgliedschaft erwachsenden Pflichten uebernehmen koenne, seien grundlegende Reformen in seiner Agrarpolitik erforderlich. Der Bericht vom November 1998 hielt gewisse Fortschritte im Hinblick auf die kurzfristigen Prioritaeten der Beitrittspartnerschaft fest. Auch die Liberalisierung der Agrarpreise und die Beseitigung der Ausfuhrabgaben und nichtmengenmaessigen Ausfuhrbeschraenkungen wurde vorangetrieben. In vielen Bereichen wurden jedoch weitere Anstrengungen verlangt, so unter anderem bei der Landreform. Im Bericht vom Oktober 1999 wurden zwar Fortschritte bei der Angleichung, insbesondere im Agrarsektor, festgestellt, aber die wirksame Anwendung der in nationales Recht umgesetzten Massnahmen ist hauptsaechlich auf Grund fehlender finanzieller Mittel weiterhin mit Schwierigkeiten verbunden. Es sind noch weitere Anstrengungen erforderlich, insbesondere im Bereich der Tierhaltung und des Bodenmarkts. In der Fischereipolitik hat Bulgarien seine ersten Massnahmen erlassen. Es hat auch die meisten UN-Uebereinkommen und Konventionen im Fischereisektor unterzeichnet und einige davon ratifiziert. Im Bericht vom November 2000 wurden die betraechtlichen Fortschritte dargestellt, die Bulgarien im Agrarsektor gemacht hat, vor allem im Wein- und im Getreidesektor. Jedoch gibt es nur wenig private Investitionen, gibt es noch keinen transparenten funktionierenden Grundstuecksmarkt und entsprechen die Rechtsvorschriften ueber die gemeinsamen Marktorganisationen noch nicht der GAP. In den Bereichen Tier- und Pflanzengesundheit sind Rechtsvorschriften erlassen worden, aber die zu ihrer Durchfuehrung eingesetzten technischen Mittel und Humanressourcen reichen noch nicht aus. Im Bereich der Fischerei wird Bulgarien noch erhebliche Anstrengungen unternehmen muessen, um den gemeinschaftlichen Besitzstand umzusetzen und die Gemeinsame Fischereipolitik anwenden zu koennen. Aus dem Bericht vom November 2001 geht hervor, dass Bulgarien zufrieden stellende Fortschritte bei der Rechtsangleichung erzielt hat. Die SAPARD- Stelle hat eine teilweise Akkreditierung von der Europaeischen Kommission erhalten. Im Bereich der Fischerei ist mit der Verabschiedung des Fischerei- und Aquakulturgesetzes im April 2001 ein wesentlicher Fortschritt erzielt worden. Ausserdem sind nicht zu vernachlaessigende Verbesserungen auf institutioneller und operationeller Ebene festgestellt worden. So ist die Verwaltungskapazitaet im Bereich der Ressourcenbewirtschaftung, -inspektion und -kontrollen verstaerkt worden und wurden gute Fortschritte bei der Schaffung des Fangflottenregisters gemacht. Im Bericht vom Oktober 2002 werden die von Bulgarien im Bereich der Rechtsangleichung und des Aufbaus des institutionellen Rahmens gemachten Fortschritte betont. Dagegen sind bei der Umsetzung der Rechtsvorschriften keine solchen Fortschritte verzeichnet worden. Im Bereich der Fischerei sind bei der Verabschiedung und Umsetzung der Gemeinsamen Fischereipolitik Bemuehungen unternommen worden. Aus dem Bericht vom November 2003 geht hervor, dass Bulgarien bei den horizontalen Fragen gute Fortschritte erzielt hat, bei der Einfuehrung der gemeinsamen Marktorganisationen jedoch in Verzug geraten ist. Bei der Entwicklung des laendlichen Raums sowie dem Veterinaer- und dem Pflanzenschutzsektor sind Fortschritte gemacht worden. Im Bereich der Fischerei hat Bulgarien seit dem letzten Bericht zahlreiche Bemuehungen unternommen. Dem Bericht vom Oktober 2004 zufolge waren Fortschritte bei der Angleichung an den gemeinschaftlichen Besitzstand und der Verstaerkung der Verwaltungskapazitaeten erzielt worden. Bulgarien hatte auch bei den horizontalen Fragen wie der Anwendung des EAGFL und der Entwicklung der gemeinsamen Marktorganisationen gute Fortschritte gemacht. Im Bericht vom Oktober 2005 wird festgestellt, dass Bulgarien die Verpflichtungen und Anforderungen erfuellt, die sich auch den Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben. Bei den operativen Systemen sowie im Veterinaerbereich sind jedoch groessere Anstrengungen notwendig. Im Bereich der Fischerei muessen bei der Bewirtschaftung der Ressourcen und dem Erlass der Rechtsvorschriften ueber die Marktpolitik noch Fortschritte gemacht werden. Der Beitrittsvertrag wurde am 25. April 2005 unterzeichnet und der Beitritt fand am 1. Januar 2007 statt. GEMEINSCHAFTLICHER BESITZSTAND Die Gemeinsame Agrarpolitik (GAP) zielt darauf ab, ein modernes Agrarsystem zu erhalten und zu entwickeln, der landwirtschaftlichen Bevoelkerung eine angemessene Lebenshaltung zu gewaehrleisten, fuer eine Belieferung der Verbraucher zu angemessenen Preisen Sorge zu tragen und den freien Warenverkehr innerhalb der Europaeischen Gemeinschaft zu verwirklichen. Das Europa-Abkommen bildet den Rechtsrahmen fuer den Handel mit Agrarerzeugnissen zwischen Bulgarien und der Europaeischen Gemeinschaft und zielt auf eine verstaerkte Zusammenarbeit bei der Modernisierung, Umstrukturierung und Privatisierung der bulgarischen Landwirtschaft und Agro- Nahrungsmittelindustrie sowie bei den Pflanzenschutznormen ab. Das Weissbuch ueber die Staaten Mittel- und Osteuropas und den Binnenmarkt (1995) deckt die Rechtsvorschriften in den Bereichen Veterinaer-, Pflanzenschutz- und Futtermittelkontrollen sowie Bestimmungen fuer die Vermarktung der Erzeugnisse ab. Mit diesen Rechtsvorschriften sollen der Schutz der Verbraucher, der oeffentlichen Gesundheit sowie der Tier- und Pflanzengesundheit gewaehrleistet werden. Die Gemeinsame Fischereipolitik umfasst die gemeinsame Marktorganisation, die Strukturpolitik, die Abkommen mit Drittlaendern, die Bewirtschaftung und Erhaltung der Fischereiressourcen und die wissenschaftliche Forschung auf diesem Gebiet. Das Europa-Abkommen enthaelt Bestimmungen ueber den Handel mit Fischereierzeugnissen zwischen der Gemeinschaft und Bulgarien. Das Weissbuch sieht keine Massnahmen in diesem Sektor vor. BEWERTUNG DER LAGE Landwirtschaft Bulgarien hat die Verhandlungen ueber dieses Kapitel vorlaeufig abgeschlossen und ist in den Genuss einiger Uebergangsregelungen gekommen. Im Allgemeinen haelt es die Verpflichtungen ein und entspricht den Anforderungen, die sich aus den Beitrittsverhandlungen ergeben. Bei der Einrichtung der Zahlstelle ist kein Fortschritt gemacht worden: die diesbezueglichen Rechtsvorschriften muessen noch erlassen werden. Ausserdem muss ein Integriertes Verwaltungs- und Kontrollsystem (INVEKOS) eingefuehrt werden. Die fuer die gemeinsamen Marktorganisationen (GMO) erforderlichen Strukturen sind noch nicht vorhanden. Bei den Rechtsvorschriften sind keine Fortschritte im Milchsektor zu verzeichnen, dagegen jedoch in den Sektoren Wein, Zucker sowie Obst und Gemuese. Im Bereich der Politik zur Entwicklung des laendlichen Raums wurde dem Land eine dreijaehrige Uebergangszeit gewaehrt. Ausserdem sind besondere Anstrengungen im Bereich der Rechtsangleichung im Veterinaerbereich zu unternehmen, insbesondere durch den Erlass des Veterinaerrahmengesetzes. Die Anstrengungen muessen dringend auf die Tierseuchenbekaempfung, den Handel mit lebenden Tieren und Erzeugnissen tierischen Ursprungs, die den Veterinaerbereich betreffenden Gesundheitsvorschriften und das Wohlbefinden der Tiere konzentriert werden. Fischerei Insgesamt wird festgestellt, dass Bulgarien seinen Verpflichtungen nachkommt und den sich aus den Beitrittsverhandlungen im Bereich der staatlichen Beihilfen und der internationalen Fischereiabkommen ergebenden Anforderungen genuegt. Verstaerkte Anstrengungen sind jedoch in den Bereichen Bestandsbewirtschaftung und Flottenmanagement erforderlich, indem die Ueberwachungs- und Kontrollinstrumente konsolidiert werden, einschliesslich der Einfuehrung des Systems zur Ueberwachung der Schiffe. Es sind Fortschritte erforderlich, um die gemeinsamen Marktorganisationen (GMO) und die fuer die Verwaltung und Ueberwachung dieses Sektors erforderlichen Verwaltungskapazitaeten zu entwickeln. Die Verhandlungen ueber dieses Kapitel sind vorlaeufig abgeschlossen und Bulgarien hat keine
+</code></pre></div></div>
+
+<p>And it did, so we know know that it works and its ok.
+Now we need to remove all the punctuations and numbers from the text. Lets do that</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">punctuation</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">punctuation</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'!"#$%&amp;\'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~'
+</code></pre></div></div>
+
+<p>It looks like it covers all the punctuation, Lets remove them</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">remove_pun</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">punctuation</span><span class="p">)</span>
+<span class="n">text_wo_pun</span> <span class="o">=</span> <span class="n">new_text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">remove_pun</span><span class="p">)</span> <span class="c1"># we are using native string functions as they are fast
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_pun</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'In ihrer Stellungnahme vom Juli 1997 war die Europaeische Kommission zu der Auffassung gelangt dass Bulgarien mit der Angleichung seiner Rechtsvorschriften an den gemeinschaftlichen Besitzstand noch sehr wenig vorangekommen ist Bevor Bulgarien die aus einer Mitgliedschaft erwachsenden Pflichten uebernehmen koenne seien grundlegende Reformen in seiner Agrarpolitik erforderlich Der Bericht vom November 1998 hielt gewisse Fortschritte im Hinblick auf die kurzfristigen Prioritaeten der Beitrittspartnerschaft fest Auch die Liberalisierung der Agrarpreise und die Beseitigung der Ausfuhrabgaben und nichtmengenmaessigen Ausfuhrbeschraenkungen wurde vorangetrieben In vielen Bereichen wurden jedoch weitere Anstrengungen verlangt so unter anderem bei der Landreform Im Bericht vom Oktober 1999 wurden zwar Fortschritte bei der Angleichung insbesondere im Agrarsektor festgestellt aber die wirksame Anwendung der in nationales Recht umgesetzten Massnahmen ist hauptsaechlich auf Grund fehlender finanzieller Mittel weiterhin mit Schwierigkeiten verbunden Es sind noch weitere Anstrengungen erforderlich insbesondere im Bereich der Tierhaltung und des Bodenmarkts In der Fischereipolitik hat Bulgarien seine ersten Massnahmen erlassen Es hat auch die meisten UNUebereinkommen und Konventionen im Fischereisektor unterzeichnet und einige davon ratifiziert Im Bericht vom November 2000 wurden die betraechtlichen Fortschritte dargestellt die Bulgarien im Agrarsektor gemacht hat vor allem im Wein und im Getreidesektor Jedoch gibt es nur wenig private Investitionen gibt es noch keinen transparenten funktionierenden Grundstuecksmarkt und entsprechen die Rechtsvorschriften ueber die gemeinsamen Marktorganisationen noch nicht der GAP In den Bereichen Tier und Pflanzengesundheit sind Rechtsvorschriften erlassen worden aber die zu ihrer Durchfuehrung eingesetzten technischen Mittel und Humanressourcen reichen noch nicht aus Im Bereich der Fischerei wird Bulgarien noch erhebliche Anstrengungen unternehmen muessen um den gemeinschaftlichen Besitzstand umzusetzen und die Gemeinsame Fischereipolitik anwenden zu koennen Aus dem Bericht vom November 2001 geht hervor dass Bulgarien zufrieden stellende Fortschritte bei der Rechtsangleichung erzielt hat Die SAPARD Stelle hat eine teilweise Akkreditierung von der Europaeischen Kommission erhalten Im Bereich der Fischerei ist mit der Verabschiedung des Fischerei und Aquakulturgesetzes im April 2001 ein wesentlicher Fortschritt erzielt worden Ausserdem sind nicht zu vernachlaessigende Verbesserungen auf institutioneller und operationeller Ebene festgestellt worden So ist die Verwaltungskapazitaet im Bereich der Ressourcenbewirtschaftung inspektion und kontrollen verstaerkt worden und wurden gute Fortschritte bei der Schaffung des Fangflottenregisters gemacht Im Bericht vom Oktober 2002 werden die von Bulgarien im Bereich der Rechtsangleichung und des Aufbaus des institutionellen Rahmens gemachten Fortschritte betont Dagegen sind bei der Umsetzung der Rechtsvorschriften keine solchen Fortschritte verzeichnet worden Im Bereich der Fischerei sind bei der Verabschiedung und Umsetzung der Gemeinsamen Fischereipolitik Bemuehungen unternommen worden Aus dem Bericht vom November 2003 geht hervor dass Bulgarien bei den horizontalen Fragen gute Fortschritte erzielt hat bei der Einfuehrung der gemeinsamen Marktorganisationen jedoch in Verzug geraten ist Bei der Entwicklung des laendlichen Raums sowie dem Veterinaer und dem Pflanzenschutzsektor sind Fortschritte gemacht worden Im Bereich der Fischerei hat Bulgarien seit dem letzten Bericht zahlreiche Bemuehungen unternommen Dem Bericht vom Oktober 2004 zufolge waren Fortschritte bei der Angleichung an den gemeinschaftlichen Besitzstand und der Verstaerkung der Verwaltungskapazitaeten erzielt worden Bulgarien hatte auch bei den horizontalen Fragen wie der Anwendung des EAGFL und der Entwicklung der gemeinsamen Marktorganisationen gute Fortschritte gemacht Im Bericht vom Oktober 2005 wird festgestellt dass Bulgarien die Verpflichtungen und Anforderungen erfuellt die sich auch den Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben Bei den operativen Systemen sowie im Veterinaerbereich sind jedoch groessere Anstrengungen notwendig Im Bereich der Fischerei muessen bei der Bewirtschaftung der Ressourcen und dem Erlass der Rechtsvorschriften ueber die Marktpolitik noch Fortschritte gemacht werden Der Beitrittsvertrag wurde am 25 April 2005 unterzeichnet und der Beitritt fand am 1 Januar 2007 statt GEMEINSCHAFTLICHER BESITZSTAND Die Gemeinsame Agrarpolitik GAP zielt darauf ab ein modernes Agrarsystem zu erhalten und zu entwickeln der landwirtschaftlichen Bevoelkerung eine angemessene Lebenshaltung zu gewaehrleisten fuer eine Belieferung der Verbraucher zu angemessenen Preisen Sorge zu tragen und den freien Warenverkehr innerhalb der Europaeischen Gemeinschaft zu verwirklichen Das EuropaAbkommen bildet den Rechtsrahmen fuer den Handel mit Agrarerzeugnissen zwischen Bulgarien und der Europaeischen Gemeinschaft und zielt auf eine verstaerkte Zusammenarbeit bei der Modernisierung Umstrukturierung und Privatisierung der bulgarischen Landwirtschaft und Agro Nahrungsmittelindustrie sowie bei den Pflanzenschutznormen ab Das Weissbuch ueber die Staaten Mittel und Osteuropas und den Binnenmarkt 1995 deckt die Rechtsvorschriften in den Bereichen Veterinaer Pflanzenschutz und Futtermittelkontrollen sowie Bestimmungen fuer die Vermarktung der Erzeugnisse ab Mit diesen Rechtsvorschriften sollen der Schutz der Verbraucher der oeffentlichen Gesundheit sowie der Tier und Pflanzengesundheit gewaehrleistet werden Die Gemeinsame Fischereipolitik umfasst die gemeinsame Marktorganisation die Strukturpolitik die Abkommen mit Drittlaendern die Bewirtschaftung und Erhaltung der Fischereiressourcen und die wissenschaftliche Forschung auf diesem Gebiet Das EuropaAbkommen enthaelt Bestimmungen ueber den Handel mit Fischereierzeugnissen zwischen der Gemeinschaft und Bulgarien Das Weissbuch sieht keine Massnahmen in diesem Sektor vor BEWERTUNG DER LAGE Landwirtschaft Bulgarien hat die Verhandlungen ueber dieses Kapitel vorlaeufig abgeschlossen und ist in den Genuss einiger Uebergangsregelungen gekommen Im Allgemeinen haelt es die Verpflichtungen ein und entspricht den Anforderungen die sich aus den Beitrittsverhandlungen ergeben Bei der Einrichtung der Zahlstelle ist kein Fortschritt gemacht worden die diesbezueglichen Rechtsvorschriften muessen noch erlassen werden Ausserdem muss ein Integriertes Verwaltungs und Kontrollsystem INVEKOS eingefuehrt werden Die fuer die gemeinsamen Marktorganisationen GMO erforderlichen Strukturen sind noch nicht vorhanden Bei den Rechtsvorschriften sind keine Fortschritte im Milchsektor zu verzeichnen dagegen jedoch in den Sektoren Wein Zucker sowie Obst und Gemuese Im Bereich der Politik zur Entwicklung des laendlichen Raums wurde dem Land eine dreijaehrige Uebergangszeit gewaehrt Ausserdem sind besondere Anstrengungen im Bereich der Rechtsangleichung im Veterinaerbereich zu unternehmen insbesondere durch den Erlass des Veterinaerrahmengesetzes Die Anstrengungen muessen dringend auf die Tierseuchenbekaempfung den Handel mit lebenden Tieren und Erzeugnissen tierischen Ursprungs die den Veterinaerbereich betreffenden Gesundheitsvorschriften und das Wohlbefinden der Tiere konzentriert werden Fischerei Insgesamt wird festgestellt dass Bulgarien seinen Verpflichtungen nachkommt und den sich aus den Beitrittsverhandlungen im Bereich der staatlichen Beihilfen und der internationalen Fischereiabkommen ergebenden Anforderungen genuegt Verstaerkte Anstrengungen sind jedoch in den Bereichen Bestandsbewirtschaftung und Flottenmanagement erforderlich indem die Ueberwachungs und Kontrollinstrumente konsolidiert werden einschliesslich der Einfuehrung des Systems zur Ueberwachung der Schiffe Es sind Fortschritte erforderlich um die gemeinsamen Marktorganisationen GMO und die fuer die Verwaltung und Ueberwachung dieses Sektors erforderlichen Verwaltungskapazitaeten zu entwickeln Die Verhandlungen ueber dieses Kapitel sind vorlaeufig abgeschlossen und Bulgarien hat keine'
+</code></pre></div></div>
+
+<p>As we can see that all the punctuation have been removed lets go on to remove numbers</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">digits</span>
+
+<span class="n">remove_digits</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span>
+ 
+</code></pre></div></div>
+
+<p>Again we are using string function to do all the heavy lifting</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_num</span> <span class="o">=</span> <span class="n">text_wo_pun</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">remove_digits</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_num</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'In ihrer Stellungnahme vom Juli  war die Europaeische Kommission zu der Auffassung gelangt dass Bulgarien mit der Angleichung seiner Rechtsvorschriften an den gemeinschaftlichen Besitzstand noch sehr wenig vorangekommen ist Bevor Bulgarien die aus einer Mitgliedschaft erwachsenden Pflichten uebernehmen koenne seien grundlegende Reformen in seiner Agrarpolitik erforderlich Der Bericht vom November  hielt gewisse Fortschritte im Hinblick auf die kurzfristigen Prioritaeten der Beitrittspartnerschaft fest Auch die Liberalisierung der Agrarpreise und die Beseitigung der Ausfuhrabgaben und nichtmengenmaessigen Ausfuhrbeschraenkungen wurde vorangetrieben In vielen Bereichen wurden jedoch weitere Anstrengungen verlangt so unter anderem bei der Landreform Im Bericht vom Oktober  wurden zwar Fortschritte bei der Angleichung insbesondere im Agrarsektor festgestellt aber die wirksame Anwendung der in nationales Recht umgesetzten Massnahmen ist hauptsaechlich auf Grund fehlender finanzieller Mittel weiterhin mit Schwierigkeiten verbunden Es sind noch weitere Anstrengungen erforderlich insbesondere im Bereich der Tierhaltung und des Bodenmarkts In der Fischereipolitik hat Bulgarien seine ersten Massnahmen erlassen Es hat auch die meisten UNUebereinkommen und Konventionen im Fischereisektor unterzeichnet und einige davon ratifiziert Im Bericht vom November  wurden die betraechtlichen Fortschritte dargestellt die Bulgarien im Agrarsektor gemacht hat vor allem im Wein und im Getreidesektor Jedoch gibt es nur wenig private Investitionen gibt es noch keinen transparenten funktionierenden Grundstuecksmarkt und entsprechen die Rechtsvorschriften ueber die gemeinsamen Marktorganisationen noch nicht der GAP In den Bereichen Tier und Pflanzengesundheit sind Rechtsvorschriften erlassen worden aber die zu ihrer Durchfuehrung eingesetzten technischen Mittel und Humanressourcen reichen noch nicht aus Im Bereich der Fischerei wird Bulgarien noch erhebliche Anstrengungen unternehmen muessen um den gemeinschaftlichen Besitzstand umzusetzen und die Gemeinsame Fischereipolitik anwenden zu koennen Aus dem Bericht vom November  geht hervor dass Bulgarien zufrieden stellende Fortschritte bei der Rechtsangleichung erzielt hat Die SAPARD Stelle hat eine teilweise Akkreditierung von der Europaeischen Kommission erhalten Im Bereich der Fischerei ist mit der Verabschiedung des Fischerei und Aquakulturgesetzes im April  ein wesentlicher Fortschritt erzielt worden Ausserdem sind nicht zu vernachlaessigende Verbesserungen auf institutioneller und operationeller Ebene festgestellt worden So ist die Verwaltungskapazitaet im Bereich der Ressourcenbewirtschaftung inspektion und kontrollen verstaerkt worden und wurden gute Fortschritte bei der Schaffung des Fangflottenregisters gemacht Im Bericht vom Oktober  werden die von Bulgarien im Bereich der Rechtsangleichung und des Aufbaus des institutionellen Rahmens gemachten Fortschritte betont Dagegen sind bei der Umsetzung der Rechtsvorschriften keine solchen Fortschritte verzeichnet worden Im Bereich der Fischerei sind bei der Verabschiedung und Umsetzung der Gemeinsamen Fischereipolitik Bemuehungen unternommen worden Aus dem Bericht vom November  geht hervor dass Bulgarien bei den horizontalen Fragen gute Fortschritte erzielt hat bei der Einfuehrung der gemeinsamen Marktorganisationen jedoch in Verzug geraten ist Bei der Entwicklung des laendlichen Raums sowie dem Veterinaer und dem Pflanzenschutzsektor sind Fortschritte gemacht worden Im Bereich der Fischerei hat Bulgarien seit dem letzten Bericht zahlreiche Bemuehungen unternommen Dem Bericht vom Oktober  zufolge waren Fortschritte bei der Angleichung an den gemeinschaftlichen Besitzstand und der Verstaerkung der Verwaltungskapazitaeten erzielt worden Bulgarien hatte auch bei den horizontalen Fragen wie der Anwendung des EAGFL und der Entwicklung der gemeinsamen Marktorganisationen gute Fortschritte gemacht Im Bericht vom Oktober  wird festgestellt dass Bulgarien die Verpflichtungen und Anforderungen erfuellt die sich auch den Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben Bei den operativen Systemen sowie im Veterinaerbereich sind jedoch groessere Anstrengungen notwendig Im Bereich der Fischerei muessen bei der Bewirtschaftung der Ressourcen und dem Erlass der Rechtsvorschriften ueber die Marktpolitik noch Fortschritte gemacht werden Der Beitrittsvertrag wurde am  April  unterzeichnet und der Beitritt fand am  Januar  statt GEMEINSCHAFTLICHER BESITZSTAND Die Gemeinsame Agrarpolitik GAP zielt darauf ab ein modernes Agrarsystem zu erhalten und zu entwickeln der landwirtschaftlichen Bevoelkerung eine angemessene Lebenshaltung zu gewaehrleisten fuer eine Belieferung der Verbraucher zu angemessenen Preisen Sorge zu tragen und den freien Warenverkehr innerhalb der Europaeischen Gemeinschaft zu verwirklichen Das EuropaAbkommen bildet den Rechtsrahmen fuer den Handel mit Agrarerzeugnissen zwischen Bulgarien und der Europaeischen Gemeinschaft und zielt auf eine verstaerkte Zusammenarbeit bei der Modernisierung Umstrukturierung und Privatisierung der bulgarischen Landwirtschaft und Agro Nahrungsmittelindustrie sowie bei den Pflanzenschutznormen ab Das Weissbuch ueber die Staaten Mittel und Osteuropas und den Binnenmarkt  deckt die Rechtsvorschriften in den Bereichen Veterinaer Pflanzenschutz und Futtermittelkontrollen sowie Bestimmungen fuer die Vermarktung der Erzeugnisse ab Mit diesen Rechtsvorschriften sollen der Schutz der Verbraucher der oeffentlichen Gesundheit sowie der Tier und Pflanzengesundheit gewaehrleistet werden Die Gemeinsame Fischereipolitik umfasst die gemeinsame Marktorganisation die Strukturpolitik die Abkommen mit Drittlaendern die Bewirtschaftung und Erhaltung der Fischereiressourcen und die wissenschaftliche Forschung auf diesem Gebiet Das EuropaAbkommen enthaelt Bestimmungen ueber den Handel mit Fischereierzeugnissen zwischen der Gemeinschaft und Bulgarien Das Weissbuch sieht keine Massnahmen in diesem Sektor vor BEWERTUNG DER LAGE Landwirtschaft Bulgarien hat die Verhandlungen ueber dieses Kapitel vorlaeufig abgeschlossen und ist in den Genuss einiger Uebergangsregelungen gekommen Im Allgemeinen haelt es die Verpflichtungen ein und entspricht den Anforderungen die sich aus den Beitrittsverhandlungen ergeben Bei der Einrichtung der Zahlstelle ist kein Fortschritt gemacht worden die diesbezueglichen Rechtsvorschriften muessen noch erlassen werden Ausserdem muss ein Integriertes Verwaltungs und Kontrollsystem INVEKOS eingefuehrt werden Die fuer die gemeinsamen Marktorganisationen GMO erforderlichen Strukturen sind noch nicht vorhanden Bei den Rechtsvorschriften sind keine Fortschritte im Milchsektor zu verzeichnen dagegen jedoch in den Sektoren Wein Zucker sowie Obst und Gemuese Im Bereich der Politik zur Entwicklung des laendlichen Raums wurde dem Land eine dreijaehrige Uebergangszeit gewaehrt Ausserdem sind besondere Anstrengungen im Bereich der Rechtsangleichung im Veterinaerbereich zu unternehmen insbesondere durch den Erlass des Veterinaerrahmengesetzes Die Anstrengungen muessen dringend auf die Tierseuchenbekaempfung den Handel mit lebenden Tieren und Erzeugnissen tierischen Ursprungs die den Veterinaerbereich betreffenden Gesundheitsvorschriften und das Wohlbefinden der Tiere konzentriert werden Fischerei Insgesamt wird festgestellt dass Bulgarien seinen Verpflichtungen nachkommt und den sich aus den Beitrittsverhandlungen im Bereich der staatlichen Beihilfen und der internationalen Fischereiabkommen ergebenden Anforderungen genuegt Verstaerkte Anstrengungen sind jedoch in den Bereichen Bestandsbewirtschaftung und Flottenmanagement erforderlich indem die Ueberwachungs und Kontrollinstrumente konsolidiert werden einschliesslich der Einfuehrung des Systems zur Ueberwachung der Schiffe Es sind Fortschritte erforderlich um die gemeinsamen Marktorganisationen GMO und die fuer die Verwaltung und Ueberwachung dieses Sektors erforderlichen Verwaltungskapazitaeten zu entwickeln Die Verhandlungen ueber dieses Kapitel sind vorlaeufig abgeschlossen und Bulgarien hat keine'
+</code></pre></div></div>
+
+<p>Now lets remove german stop words from the text, So here we can not use string function, but we are going to use list comprihensions which are as fast as string functions</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_wo_num</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">german_stop_words_to_use</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Now lets see if it removed the stop words or not</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_stop_words</span> <span class="o">=</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_wo_stop_words</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_wo_stop_words</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'Stellungnahme Juli Europaeische Kommission Auffassung gelangt Bulgarien Angleichung Rechtsvorschriften gemeinschaftlichen Besitzstand wenig vorangekommen Bevor Bulgarien Mitgliedschaft erwachsenden Pflichten uebernehmen koenne seien grundlegende Reformen Agrarpolitik erforderlich Bericht November hielt gewisse Fortschritte Hinblick kurzfristigen Prioritaeten Beitrittspartnerschaft fest Liberalisierung Agrarpreise Beseitigung Ausfuhrabgaben nichtmengenmaessigen Ausfuhrbeschraenkungen wurde vorangetrieben vielen Bereichen wurden jedoch weitere Anstrengungen verlangt Landreform Bericht Oktober wurden Fortschritte Angleichung insbesondere Agrarsektor festgestellt wirksame Anwendung nationales Recht umgesetzten Massnahmen hauptsaechlich Grund fehlender finanzieller Mittel weiterhin Schwierigkeiten verbunden weitere Anstrengungen erforderlich insbesondere Bereich Tierhaltung Bodenmarkts Fischereipolitik Bulgarien ersten Massnahmen erlassen meisten UNUebereinkommen Konventionen Fischereisektor unterzeichnet davon ratifiziert Bericht November wurden betraechtlichen Fortschritte dargestellt Bulgarien Agrarsektor gemacht Wein Getreidesektor Jedoch gibt wenig private Investitionen gibt transparenten funktionierenden Grundstuecksmarkt entsprechen Rechtsvorschriften gemeinsamen Marktorganisationen GAP Bereichen Tier Pflanzengesundheit Rechtsvorschriften erlassen worden Durchfuehrung eingesetzten technischen Mittel Humanressourcen reichen Bereich Fischerei Bulgarien erhebliche Anstrengungen unternehmen muessen gemeinschaftlichen Besitzstand umzusetzen Gemeinsame Fischereipolitik anwenden Bericht November geht hervor Bulgarien zufrieden stellende Fortschritte Rechtsangleichung erzielt SAPARD Stelle teilweise Akkreditierung Europaeischen Kommission erhalten Bereich Fischerei Verabschiedung Fischerei Aquakulturgesetzes April wesentlicher Fortschritt erzielt worden Ausserdem vernachlaessigende Verbesserungen institutioneller operationeller Ebene festgestellt worden Verwaltungskapazitaet Bereich Ressourcenbewirtschaftung inspektion kontrollen verstaerkt worden wurden gute Fortschritte Schaffung Fangflottenregisters gemacht Bericht Oktober Bulgarien Bereich Rechtsangleichung Aufbaus institutionellen Rahmens gemachten Fortschritte betont Dagegen Umsetzung Rechtsvorschriften Fortschritte verzeichnet worden Bereich Fischerei Verabschiedung Umsetzung Gemeinsamen Fischereipolitik Bemuehungen unternommen worden Bericht November geht hervor Bulgarien horizontalen Fragen gute Fortschritte erzielt Einfuehrung gemeinsamen Marktorganisationen jedoch Verzug geraten Entwicklung laendlichen Raums sowie Veterinaer Pflanzenschutzsektor Fortschritte gemacht worden Bereich Fischerei Bulgarien seit letzten Bericht zahlreiche Bemuehungen unternommen Bericht Oktober zufolge Fortschritte Angleichung gemeinschaftlichen Besitzstand Verstaerkung Verwaltungskapazitaeten erzielt worden Bulgarien horizontalen Fragen Anwendung EAGFL Entwicklung gemeinsamen Marktorganisationen gute Fortschritte gemacht Bericht Oktober festgestellt Bulgarien Verpflichtungen Anforderungen erfuellt Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben operativen Systemen sowie Veterinaerbereich jedoch groessere Anstrengungen notwendig Bereich Fischerei muessen Bewirtschaftung Ressourcen Erlass Rechtsvorschriften Marktpolitik Fortschritte gemacht Beitrittsvertrag wurde April unterzeichnet Beitritt fand Januar statt GEMEINSCHAFTLICHER BESITZSTAND Gemeinsame Agrarpolitik GAP zielt darauf ab modernes Agrarsystem erhalten entwickeln landwirtschaftlichen Bevoelkerung angemessene Lebenshaltung gewaehrleisten Belieferung Verbraucher angemessenen Preisen Sorge tragen freien Warenverkehr innerhalb Europaeischen Gemeinschaft verwirklichen EuropaAbkommen bildet Rechtsrahmen Handel Agrarerzeugnissen Bulgarien Europaeischen Gemeinschaft zielt verstaerkte Zusammenarbeit Modernisierung Umstrukturierung Privatisierung bulgarischen Landwirtschaft Agro Nahrungsmittelindustrie sowie Pflanzenschutznormen ab Weissbuch Staaten Mittel Osteuropas Binnenmarkt deckt Rechtsvorschriften Bereichen Veterinaer Pflanzenschutz Futtermittelkontrollen sowie Bestimmungen Vermarktung Erzeugnisse ab Rechtsvorschriften sollen Schutz Verbraucher oeffentlichen Gesundheit sowie Tier Pflanzengesundheit gewaehrleistet Gemeinsame Fischereipolitik umfasst gemeinsame Marktorganisation Strukturpolitik Abkommen Drittlaendern Bewirtschaftung Erhaltung Fischereiressourcen wissenschaftliche Forschung Gebiet EuropaAbkommen enthaelt Bestimmungen Handel Fischereierzeugnissen Gemeinschaft Bulgarien Weissbuch sieht Massnahmen Sektor BEWERTUNG LAGE Landwirtschaft Bulgarien Verhandlungen Kapitel vorlaeufig abgeschlossen Genuss Uebergangsregelungen gekommen Allgemeinen haelt Verpflichtungen entspricht Anforderungen Beitrittsverhandlungen ergeben Einrichtung Zahlstelle Fortschritt gemacht worden diesbezueglichen Rechtsvorschriften muessen erlassen Ausserdem Integriertes Verwaltungs Kontrollsystem INVEKOS eingefuehrt gemeinsamen Marktorganisationen GMO erforderlichen Strukturen vorhanden Rechtsvorschriften Fortschritte Milchsektor verzeichnen dagegen jedoch Sektoren Wein Zucker sowie Obst Gemuese Bereich Politik Entwicklung laendlichen Raums wurde Land dreijaehrige Uebergangszeit gewaehrt Ausserdem besondere Anstrengungen Bereich Rechtsangleichung Veterinaerbereich unternehmen insbesondere Erlass Veterinaerrahmengesetzes Anstrengungen muessen dringend Tierseuchenbekaempfung Handel lebenden Tieren Erzeugnissen tierischen Ursprungs Veterinaerbereich betreffenden Gesundheitsvorschriften Wohlbefinden Tiere konzentriert Fischerei Insgesamt festgestellt Bulgarien Verpflichtungen nachkommt Beitrittsverhandlungen Bereich staatlichen Beihilfen internationalen Fischereiabkommen ergebenden Anforderungen genuegt Verstaerkte Anstrengungen jedoch Bereichen Bestandsbewirtschaftung Flottenmanagement erforderlich Ueberwachungs Kontrollinstrumente konsolidiert einschliesslich Einfuehrung Systems Ueberwachung Schiffe Fortschritte erforderlich gemeinsamen Marktorganisationen GMO Verwaltung Ueberwachung Sektors erforderlichen Verwaltungskapazitaeten entwickeln Verhandlungen Kapitel vorlaeufig abgeschlossen Bulgarien'
+</code></pre></div></div>
+
+<p>After the stop word removal lets do some more preprocessing that is specific to this corpus of data that is removing the currency symbols that are most common 
+$|€|¥|₹|£</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">currency</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="s">"""
+    Removes the currency symbols from the text
+    :param text: text as string
+    :retrun: manipulated text as string
+    """</span>
+    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">text</span> <span class="c1"># local variable
+</span>    
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'$'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'€'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'¥'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'₹'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+    <span class="n">tempVar</span> <span class="o">=</span> <span class="n">tempVar</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'£'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">tempVar</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_after_currency_removal</span> <span class="o">=</span> <span class="n">currency</span><span class="p">(</span><span class="n">text_wo_stop_words</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_after_currency_removal</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'Stellungnahme Juli Europaeische Kommission Auffassung gelangt Bulgarien Angleichung Rechtsvorschriften gemeinschaftlichen Besitzstand wenig vorangekommen Bevor Bulgarien Mitgliedschaft erwachsenden Pflichten uebernehmen koenne seien grundlegende Reformen Agrarpolitik erforderlich Bericht November hielt gewisse Fortschritte Hinblick kurzfristigen Prioritaeten Beitrittspartnerschaft fest Liberalisierung Agrarpreise Beseitigung Ausfuhrabgaben nichtmengenmaessigen Ausfuhrbeschraenkungen wurde vorangetrieben vielen Bereichen wurden jedoch weitere Anstrengungen verlangt Landreform Bericht Oktober wurden Fortschritte Angleichung insbesondere Agrarsektor festgestellt wirksame Anwendung nationales Recht umgesetzten Massnahmen hauptsaechlich Grund fehlender finanzieller Mittel weiterhin Schwierigkeiten verbunden weitere Anstrengungen erforderlich insbesondere Bereich Tierhaltung Bodenmarkts Fischereipolitik Bulgarien ersten Massnahmen erlassen meisten UNUebereinkommen Konventionen Fischereisektor unterzeichnet davon ratifiziert Bericht November wurden betraechtlichen Fortschritte dargestellt Bulgarien Agrarsektor gemacht Wein Getreidesektor Jedoch gibt wenig private Investitionen gibt transparenten funktionierenden Grundstuecksmarkt entsprechen Rechtsvorschriften gemeinsamen Marktorganisationen GAP Bereichen Tier Pflanzengesundheit Rechtsvorschriften erlassen worden Durchfuehrung eingesetzten technischen Mittel Humanressourcen reichen Bereich Fischerei Bulgarien erhebliche Anstrengungen unternehmen muessen gemeinschaftlichen Besitzstand umzusetzen Gemeinsame Fischereipolitik anwenden Bericht November geht hervor Bulgarien zufrieden stellende Fortschritte Rechtsangleichung erzielt SAPARD Stelle teilweise Akkreditierung Europaeischen Kommission erhalten Bereich Fischerei Verabschiedung Fischerei Aquakulturgesetzes April wesentlicher Fortschritt erzielt worden Ausserdem vernachlaessigende Verbesserungen institutioneller operationeller Ebene festgestellt worden Verwaltungskapazitaet Bereich Ressourcenbewirtschaftung inspektion kontrollen verstaerkt worden wurden gute Fortschritte Schaffung Fangflottenregisters gemacht Bericht Oktober Bulgarien Bereich Rechtsangleichung Aufbaus institutionellen Rahmens gemachten Fortschritte betont Dagegen Umsetzung Rechtsvorschriften Fortschritte verzeichnet worden Bereich Fischerei Verabschiedung Umsetzung Gemeinsamen Fischereipolitik Bemuehungen unternommen worden Bericht November geht hervor Bulgarien horizontalen Fragen gute Fortschritte erzielt Einfuehrung gemeinsamen Marktorganisationen jedoch Verzug geraten Entwicklung laendlichen Raums sowie Veterinaer Pflanzenschutzsektor Fortschritte gemacht worden Bereich Fischerei Bulgarien seit letzten Bericht zahlreiche Bemuehungen unternommen Bericht Oktober zufolge Fortschritte Angleichung gemeinschaftlichen Besitzstand Verstaerkung Verwaltungskapazitaeten erzielt worden Bulgarien horizontalen Fragen Anwendung EAGFL Entwicklung gemeinsamen Marktorganisationen gute Fortschritte gemacht Bericht Oktober festgestellt Bulgarien Verpflichtungen Anforderungen erfuellt Beitrittsverhandlungen hinsichtlich bestimmter horizontaler Fragen ergeben operativen Systemen sowie Veterinaerbereich jedoch groessere Anstrengungen notwendig Bereich Fischerei muessen Bewirtschaftung Ressourcen Erlass Rechtsvorschriften Marktpolitik Fortschritte gemacht Beitrittsvertrag wurde April unterzeichnet Beitritt fand Januar statt GEMEINSCHAFTLICHER BESITZSTAND Gemeinsame Agrarpolitik GAP zielt darauf ab modernes Agrarsystem erhalten entwickeln landwirtschaftlichen Bevoelkerung angemessene Lebenshaltung gewaehrleisten Belieferung Verbraucher angemessenen Preisen Sorge tragen freien Warenverkehr innerhalb Europaeischen Gemeinschaft verwirklichen EuropaAbkommen bildet Rechtsrahmen Handel Agrarerzeugnissen Bulgarien Europaeischen Gemeinschaft zielt verstaerkte Zusammenarbeit Modernisierung Umstrukturierung Privatisierung bulgarischen Landwirtschaft Agro Nahrungsmittelindustrie sowie Pflanzenschutznormen ab Weissbuch Staaten Mittel Osteuropas Binnenmarkt deckt Rechtsvorschriften Bereichen Veterinaer Pflanzenschutz Futtermittelkontrollen sowie Bestimmungen Vermarktung Erzeugnisse ab Rechtsvorschriften sollen Schutz Verbraucher oeffentlichen Gesundheit sowie Tier Pflanzengesundheit gewaehrleistet Gemeinsame Fischereipolitik umfasst gemeinsame Marktorganisation Strukturpolitik Abkommen Drittlaendern Bewirtschaftung Erhaltung Fischereiressourcen wissenschaftliche Forschung Gebiet EuropaAbkommen enthaelt Bestimmungen Handel Fischereierzeugnissen Gemeinschaft Bulgarien Weissbuch sieht Massnahmen Sektor BEWERTUNG LAGE Landwirtschaft Bulgarien Verhandlungen Kapitel vorlaeufig abgeschlossen Genuss Uebergangsregelungen gekommen Allgemeinen haelt Verpflichtungen entspricht Anforderungen Beitrittsverhandlungen ergeben Einrichtung Zahlstelle Fortschritt gemacht worden diesbezueglichen Rechtsvorschriften muessen erlassen Ausserdem Integriertes Verwaltungs Kontrollsystem INVEKOS eingefuehrt gemeinsamen Marktorganisationen GMO erforderlichen Strukturen vorhanden Rechtsvorschriften Fortschritte Milchsektor verzeichnen dagegen jedoch Sektoren Wein Zucker sowie Obst Gemuese Bereich Politik Entwicklung laendlichen Raums wurde Land dreijaehrige Uebergangszeit gewaehrt Ausserdem besondere Anstrengungen Bereich Rechtsangleichung Veterinaerbereich unternehmen insbesondere Erlass Veterinaerrahmengesetzes Anstrengungen muessen dringend Tierseuchenbekaempfung Handel lebenden Tieren Erzeugnissen tierischen Ursprungs Veterinaerbereich betreffenden Gesundheitsvorschriften Wohlbefinden Tiere konzentriert Fischerei Insgesamt festgestellt Bulgarien Verpflichtungen nachkommt Beitrittsverhandlungen Bereich staatlichen Beihilfen internationalen Fischereiabkommen ergebenden Anforderungen genuegt Verstaerkte Anstrengungen jedoch Bereichen Bestandsbewirtschaftung Flottenmanagement erforderlich Ueberwachungs Kontrollinstrumente konsolidiert einschliesslich Einfuehrung Systems Ueberwachung Schiffe Fortschritte erforderlich gemeinsamen Marktorganisationen GMO Verwaltung Ueberwachung Sektors erforderlichen Verwaltungskapazitaeten entwickeln Verhandlungen Kapitel vorlaeufig abgeschlossen Bulgarien'
+</code></pre></div></div>
+
+<p>After this we will perform lemmetization, for this we are going to use spacy library which has industry standard lemmetizer</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">spacy</span>
+<span class="n">model_de</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'de'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192, got 176
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192, got 176
+  return f(*args, **kwds)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lemmatizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span> 
+    <span class="s">"""
+    Lemmetize words using spacy
+    :param: text as string
+    :return: lemmetized text as string
+    """</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">model_de</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="n">sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_after_lema</span> <span class="o">=</span> <span class="n">lemmatizer</span><span class="p">(</span><span class="n">text_after_currency_removal</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_after_lema</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'stellungnahme juli europaeische kommission auffassung langen bulgarien angleichung rechtsvorschriften gemeinschaftlich besitzstand wenig vorangekommen bevor bulgarien mitgliedschaft erwachsend pflichten uebernehmen koenne sein grundlegende reformen agrarpolitik erforderlich bericht november halten gewiß fortschritte hinblick kurzfristig prioritaeten beitrittspartnerschaft fest liberalisierung agrarpreise beseitigung ausfuhrabgaben nichtmengenmaessigen ausfuhrbeschraenkungen werden vorangetrieben viel bereichen werden jedoch weit anstrengungen verlangen landreform bericht oktober werden fortschritte angleichung insbesondere agrarsektor feststellen wirksam anwendung national recht umgesetzt massnahmen hauptsaechlich grund fehlend finanziell mittel weiterhin schwierigkeiten verbinden weit anstrengungen erforderlich insbesondere bereich tierhaltung bodenmarkts fischereipolitik bulgarien erst massnahmen erlassen meist unuebereinkommen konventionen fischereisektor unterzeichnen davon ratifizieren bericht november werden betraechtlichen fortschritte darstellen bulgarien agrarsektor machen wein getreidesektor jedoch geben wenig privat investitionen geben transparent funktionierend grundstuecksmarkt entsprechen rechtsvorschriften gemeinsam marktorganisationen gap bereichen tier pflanzengesundheit rechtsvorschriften erlassen werden durchfuehrung eingesetzt technisch mittel humanressourcen reich bereich fischerei bulgarien erheblich anstrengungen unternehmen muessen gemeinschaftlich besitzstand umsetzen gemeinsam fischereipolitik anwenden bericht november gehen hervor bulgarien zufrieden stellend fortschritte rechtsangleichung erzielen sapard stelle teilweise akkreditierung europaeischen kommission erhalten bereich fischerei verabschiedung fischerei aquakulturgesetzes april wesentlich fortschritt erzielen werden ausserdem vernachlaessigende verbesserungen institutionell operationeller eben feststellen werden verwaltungskapazitaet bereich ressourcenbewirtschaftung inspektion kontrollen verstaerkt werden werden gut fortschritte schaffung fangflottenregisters machen bericht oktober bulgarien bereich rechtsangleichung aufbaus institutionell rahmens gemacht fortschritte betonen dagegen umsetzung rechtsvorschriften fortschritte verzeichnen werden bereich fischerei verabschiedung umsetzung gemeinsam fischereipolitik bemuehungen unternehmen werden bericht november gehen hervor bulgarien horizontal fragen gut fortschritte erzielen einfuehrung gemeinsam marktorganisationen jedoch verzug geraten entwicklung laendlichen raums sowie veterinaer pflanzenschutzsektor fortschritte machen werden bereich fischerei bulgarien seit letzt bericht zahlreiche bemuehungen unternehmen bericht oktober zufolge fortschritte angleichung gemeinschaftlich besitzstand verstaerkung verwaltungskapazitaeten erzielen werden bulgarien horizontal fragen anwendung eagfl entwicklung gemeinsam marktorganisationen gut fortschritte machen bericht oktober feststellen bulgarien verpflichtungen anforderungen erfuellt beitrittsverhandlungen hinsichtlich bestimmt horizontal fragen ergeben operativ systemen sowie veterinaerbereich jedoch groessere anstrengungen notwendig bereich fischerei muessen bewirtschaftung ressourcen erlass rechtsvorschriften marktpolitik fortschritte machen beitrittsvertrag werden april unterzeichnen beitreten finden januar statt gemeinschaftlich besitzstand gemeinsam agrarpolitik gap zielen darauf ab modern agrarsystem erhalten entwickeln landwirtschaftlich bevoelkerung angemessen lebenshaltung gewaehrleisten belieferung verbraucher angemessen preisen sorge tragen frei warenverkehr innerhalb europaeischen gemeinschaft verwirklichen europaabkommen bilden rechtsrahmen handel agrarerzeugnissen bulgarien europaeischen gemeinschaft zielen verstaerkte zusammenarbeit modernisierung umstrukturierung privatisierung bulgarisch landwirtschaft agro nahrungsmittelindustrie sowie pflanzenschutznormen ab weissbuch staaten mittel osteuropas binnenmarkt decken rechtsvorschriften bereichen veterinaer pflanzenschutz futtermittelkontrollen sowie bestimmungen vermarktung erzeugnisse ab rechtsvorschriften sollen schutz verbraucher oeffentlichen gesundheit sowie tier pflanzengesundheit gewaehrleistet gemeinsam fischereipolitik umfasst gemeinsam marktorganisation strukturpolitik abkommen drittlaendern bewirtschaftung erhaltung fischereiressourcen wissenschaftliche forschung gebiet europaabkommen enthaelt bestimmungen handel fischereierzeugnissen gemeinschaft bulgarien weissbuch sehen massnahmen sektor bewertung lage landwirtschaft bulgarien verhandlungen kapitel vorlaeufig abschließen genuss uebergangsregelungen kommen allgemein haelt verpflichtungen entsprechen anforderungen beitrittsverhandlungen ergeben einrichtung zahlstelle fortschritt machen werden diesbezueglichen rechtsvorschriften muessen erlassen ausserdem integriert verwaltungs kontrollsystem invekos eingefuehrt gemeinsam marktorganisationen gmo erforderlich strukturen vorhanden rechtsvorschriften fortschritte milchsektor verzeichnen dagegen jedoch sektoren wein zucker sowie obst gemuese bereich politik entwicklung laendlichen raums werden land dreijaehrige uebergangszeit gewaehrt ausserdem besonder anstrengungen bereich rechtsangleichung veterinaerbereich unternehmen insbesondere erlass veterinaerrahmengesetzes anstrengungen muessen dringen tierseuchenbekaempfung handel lebend tieren erzeugnissen tierisch ursprungs veterinaerbereich betreffend gesundheitsvorschriften wohlbefinden tiere konzentrieren fischerei insgesamt feststellen bulgarien verpflichtungen nachkommen beitrittsverhandlungen bereich staatlich beihilfen international fischereiabkommen ergebend anforderungen genuegt verstaerkte anstrengungen jedoch bereichen bestandsbewirtschaftung flottenmanagement erforderlich ueberwachungs kontrollinstrumente konsolidieren einschliesslich einfuehrung systems ueberwachung schiffe fortschritte erforderlich gemeinsam marktorganisationen gmo verwaltung ueberwachung sektors erforderlich verwaltungskapazitaeten entwickeln verhandlungen kapitel vorlaeufig abschließen bulgarien'
+</code></pre></div></div>
+
+<p>Ok I dont know german so I can’t say if it did its job or not but I we will check it</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text_after_lema</span> <span class="o">==</span> <span class="n">text_after_currency_removal</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>False
+</code></pre></div></div>
+
+<p>This is a good indication as its a proof that it did something for making sure lets just try some thing</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="s">'The quick brown fox jumps over the lazy dog'</span>
+<span class="n">b</span> <span class="o">=</span> <span class="s">'The quick brown fox jumps over the lazy dog'</span>
+<span class="n">c</span> <span class="o">=</span> <span class="s">'The quick brown fox jump over the lazy dog'</span>   
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>True
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span> <span class="o">==</span> <span class="n">c</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>False
+</code></pre></div></div>
+
+<p>Yep it works so I will assume that the lemmetizer worked. This is probably all the preprocessig required for preprocessing German Text</p>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2018-05/German-Preprocessing" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2018-05/German-Preprocessing" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <!--<li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2018-05/German-Preprocessing" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>-->
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2018-05/German-Preprocessing" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2018-05/German-Preprocessing" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'jayvala';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+        <footer>
+  &copy; 2020 Jay Vala. Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://github.com/renyuanz/leonids/">leonids theme</a> made with <i class="fa fa-heart heart-icon"></i>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>
