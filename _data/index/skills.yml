@@ -2,5 +2,5 @@
 
 label: Ability
 id : cs
-aspects: Motivation, GitHub, Tensorflow, Keras, Docker, Python, AWS, Scrapy
-percentage: 100, 65, 70, 60, 60, 80, 60, 80
+aspects: Motivation, GitHub, Tensorflow, Keras, Docker, Python, AWS, Scrapy, Docker, Rancher, Kubernets
+percentage: 100, 65, 70, 60, 60, 80, 60, 80, 40, 50, 50
