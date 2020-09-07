@@ -3,3 +3,28 @@
   github: https://github.com/jdvala/Thesis
 
 # TODO: Add other projects, 12 cp and 6 cp
+
+- name: python-lei
+  descr: "This project is wraper for Leilex, legal entity identifier API. Includes ISIN-LEI conversion. Search LEI number using company name. "
+  github: https://github.com/jdvala/python-lei
+
+
+
+- name: autopyenv
+  descr: "A vscode extension that lets you create and manage a virtual environment for your python project. Ideal for developers working in large teams who manages a lot of python packages."
+  github: https://github.com/jdvala/autopyenv
+
+  - name: autopyenv
+  descr: ""Tell me why is the media so negative? - Dr. A.P.J Abdul Kalam". While media houses are doing less, we chose to prioritize optimism over gloom.
+
+  “Feel Good News” app filters the negative news and provides positive news inducing a good feeling.
+  
+  The app takes advantage of the advancements in AI and Machine Learning to filter out texts that seem negative and gloomy.
+  
+  News intertwined with social media in a globalized economy is a product which thrives on sensationalism, negativity, polarization, fake news, agendas and propaganda. The obvious casualty is the truth and all the good that is happening around us.
+  
+  In all the challenges the present has thrown at us, there is enough to celebrate and inspire. While media houses are not doing anything, we chose to prioritize optimism over gloom. Feel Good News looks at the sunnier side and reinforces the good in each one of us. A small encouragement is all that is required to propel the human spirit to triumph in testing times.
+  
+  Start of your day with Feel Good News and commence your journey of a better day and a better world.."
+  android: https://play.google.com/store/apps/details?id=com.feelgoodnews.app&hl=en_US
+  ios: https://apps.apple.com/us/app/feel-good-news/id1524693342
