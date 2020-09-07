@@ -56,7 +56,7 @@ Rancher takes some time to set up everything and pulls the image down from my pr
 
 Once the pods are initialized we can see the status of the container and pods.
 
-![Deployed](https://media-exp1.licdn.com/dms/image/C4E12AQHxYtxuH8Xivg/article-inline_image-shrink_1000_1488/0?e=1605139200&v=beta&t=_DYSSYajGncHOzsDSUQ5ON-Pq1US6VvAv8BcSv4yLRs)
+![Deployed](https://media-exp1.licdn.com/dms/image/C4E12AQHaqFLvri7B8w/article-inline_image-shrink_1000_1488/0?e=1605139200&v=beta&t=GXDRsWxH8C_SGPAoKTbWjmi6yNbaJq_Qx8R4HUigihw)
 
 Now, we can click on the three dots so that we can see the logs from the app and verify that our app is in fact running.
 
