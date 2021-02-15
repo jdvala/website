@@ -9,7 +9,7 @@ share: true
 
 Wouldn't it be cool to build just for fun one of the most used and beloved tool in Data Science and Python community, the `Interactive Python (ipython) shell`.
 
-The other day I was watching youtube videos, learning all about python and I came across this video by Sebastiaan Mathôt, in which he had built his own `ipython` shell. I thought it was very cool and I wanted to replicate it. The link for the video is [:tv:](https://youtu.be/uSmOry4PY0Q)
+The other day I was watching youtube videos, learning all about python and I came across this video by Sebastiaan Mathôt, in which he had built his own `ipython` shell. I thought it was very cool and I wanted to replicate it. The link for the video is [here](https://youtu.be/uSmOry4PY0Q)
 
 We start by thinking about how `ipython` works, we enter a valid python code and the `ipython` interpreter evaluates it and gives back the results and spawns a new line for us to write another peice of code. So how can we replicate it? Lets create our main function that gets users input and prints it out. 
 
@@ -33,7 +33,7 @@ if __name__ ==  "__main__":
 
 Here in the code above I could have used `while` loop but I did not want to keep track of `i` and increment it everytime. `Itertools` provide `count` function which returns `i` and we now have a for loop. 
 
-Now if we run the above code with python we should see something familiar :tada:
+Now if we run the above code with python we should see something familiar, nice!
 
 ```bash
 In [0]: 
