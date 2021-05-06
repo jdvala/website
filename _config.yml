@@ -6,7 +6,7 @@
 title: Jay Vala
 email: me@jayvala.in
 description: A Data Scientist in making.
-url: /website # the base hostname & protocol for your site
+url:  # the base hostname & protocol for your site
 keywords: ["blog", "jekyll"]
 
 #
