@@ -32,7 +32,7 @@ The first `cron` job is for every hour to remind me to sit striaght and the seco
 
 I added these commands in my `crontab` and waited half hour and nothing!! 
 
-I looked on the internet and found this stackoverflow question https://askubuntu.com/questions/978382/how-can-i-show-notify-send-messages-triggered-by-crontab/978413#978413
+I looked on the internet and found this stackoverflow question [here](https://askubuntu.com/questions/978382/how-can-i-show-notify-send-messages-triggered-by-crontab/978413#978413)
 
 That's it I added the script and called it `run_gui_cron.sh`, made it executable by `chmod +x run_gui_cron.sh` and updated my cron jobs
 
