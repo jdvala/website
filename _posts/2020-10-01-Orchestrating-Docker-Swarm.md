@@ -5,6 +5,7 @@ excerpt: "Orchestrating Docker Swarm"
 categories: [Docker]
 comment: true
 share: true
+tags: docker swarm orchestration 
 ---
 
 Initalize a swarm on a node which you can prefer, to create a manager. The architecture of the docker swarm orchestration is that it has a manager node (which is a whole node or computer). Then there are worker nodes which can be controlled or manage by the manager node. 
