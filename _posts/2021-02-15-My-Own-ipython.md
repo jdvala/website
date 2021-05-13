@@ -5,6 +5,7 @@ excerpt: "Inspired by a video from Sebastiaan Mathôt"
 categories: [Python, ipython]
 comment: true
 share: true
+tags: ipython python
 ---
 
 Wouldn't it be cool to build just for fun one of the most used and beloved tool in Data Science and Python community, the `Interactive Python (ipython) shell`.
