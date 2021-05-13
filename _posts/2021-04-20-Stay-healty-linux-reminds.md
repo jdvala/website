@@ -5,6 +5,7 @@ excerpt: "Linux reminders"
 categories: [corn, Bash, shell]
 comment: true
 share: true
+tags: health hacks corn bash shell
 ---
 
 During this pandemic we have all been working from home, which has its own merits but also has its own demerits. In the office we behave in a certian way as we have our colleague in the same sitting area, but at home we are in our own comfort zone.
