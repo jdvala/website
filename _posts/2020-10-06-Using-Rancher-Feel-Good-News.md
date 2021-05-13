@@ -5,6 +5,7 @@ excerpt: "Take my horse to the old town road!"
 categories: [Kubernets, Rancher]
 comment: true
 share: true
+tags: rancher kubernetes app deployment
 ---
 
 > TL;DR: this deployment was overkill but I learned a lot. Hats off to all the DevOps out there.
