@@ -5,6 +5,7 @@ excerpt: "The bash way"
 categories: [Python, Bash, shell]
 comment: true
 share: true
+tags: virtual-env python bash shell
 ---
 
 In any fast paced AI startup, developers and data scientist have to manage a lot of repositories. For me personally, I manage 3 or sometimes 4 repositories at a time and switching between virtual environemts for these repositories is pain according to me, writing `source deactivate` to first deactivate the exisiting environment and then activating it by `cd`ing into the repo and `source env/bin/activate`.
