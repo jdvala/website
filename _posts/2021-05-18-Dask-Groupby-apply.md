@@ -97,3 +97,5 @@ output.compute()
 |   male |        0 | 577 |
 
 This ends a small tutorial on how to use dask for groupby and apply.
+
+I am planning on writing a whole series on dask and how its an alternative to some of the things you can do with pandas.
