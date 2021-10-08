@@ -5,6 +5,7 @@ excerpt: "Handy dandy notes"
 date:   2018-11-02
 categories: [intoToDeepLearning]
 comments: true
+usemathjax: true
 share: true
 ---
 
